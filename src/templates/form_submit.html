@@ -1,13 +1,56 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>simple-fsm</title>
-        
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>simple-fsm</title>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='jquery-linedtextarea.css') }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}"/>
-        <script src="{{ url_for('static',filename='jquery-1.8.1.min.js' ) }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}"/>   
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">simple<strong>fsm</strong></a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#help">Help</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://github.com/kuhi/simple-fsm">GitHub</a></li>
+                </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+        
+        <div class="container">
+            <div class="jumbotron">
+                <form id="scxmlform" method="post" action="{{ url_for('evaluate_fsm') }}">
+                    <h3>Finite State Machine XML:</h3>
+                    <textarea wrap="hard" style="font-family:monospace" class="form-control" style="resize:vertical;" rows="15" name="scxml" form="scxmlform">Enter the xml in SCXML format here.</textarea>
+                    <br/>
+                    <h3>Words to evaluate:</h3>
+                    <textarea wrap="soft" style="font-family:monospace;resize:vertical" class="form-control" style="resize:vertical;" rows="15" name="words" form="scxmlform">Enter words for your automaton to evaluate. Enter one word per line.</textarea>
+                    <br/>
+                    <input class="btn btn-lg btn-success" type="submit" value="Compute" />    
+                </form>
+            </div>
+        </div>
+        
+        
+        <script src="{{url_for('static',filename='jquery-1.12.3.min.js')}}"></script>
+        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+        <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
         <script src="{{ url_for('static',filename='jquery.autogrowtextarea.min.js' ) }}"></script>
         <script src="{{ url_for('static',filename='jquery-linedtextarea.js') }}"></script>
         <script>
@@ -17,22 +60,6 @@
                 });
             });
         </script>
-    </head>
-    <body>
-        <div class="container">
-            <h1>simple<strong>fsm</strong></h1>
-            <div class="jumbotron">
-                <form id="scxmlform" method="post" action="{{ url_for('evaluate_fsm') }}">
-                    <h3>Finite State Machine XML:</h3>
-                    <textarea class="form-control" style="resize:vertical;" rows="15" name="scxml" form="scxmlform">Enter xml in SCXML format here.</textarea>
-                    <br/>
-                    <h3>Words to evaluate:</h3>
-                    <textarea class="form-control" style="resize:vertical;" rows="15" name="words" form="scxmlform">Enter words for your automaton to evaluate. Enter one word per line.</textarea>
-                    <br/>
-                    <input class="btn btn-lg btn-success" type="submit" value="Compute" />    
-                </form>
-            </div>
-        </div>
     </body>
 </html>
  
