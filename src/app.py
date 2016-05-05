@@ -2,6 +2,7 @@
 # and render_template, to render our templates (form and response)
 # we'll use url_for to get some URLs for the app on the templates
 from flask import Flask, render_template, request, url_for
+from drawfsm import *
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -17,8 +18,9 @@ def form():
 @app.route('/evaluate_fsm/', methods=['POST'])
 def evaluate_fsm():
     scxml = request.form['scxml']
+    out = intoJavascript(parseXmlFromString(scxml))
     words = request.form['words']
-    return render_template('form_action.html', scxml=scxml, words=words)
+    return render_template('form_action.html', scxml=scxml, words=words,graphvis=out)
 
 # Run the app :)
 if __name__ == '__main__':

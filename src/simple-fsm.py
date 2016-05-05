@@ -1,1 +1,0 @@
-#simple-fsm main evaluation module (class and function definitions)
