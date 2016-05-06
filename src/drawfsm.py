@@ -74,7 +74,8 @@ def intoJavascript(fsm):
     
     output += "]);\n"
     
-    output += """var container = document.getElementById('mynetwork');
+    output += """
+var container = document.getElementById('displayedGraph');
 var data = {
     nodes: nodes,
     edges: edges

@@ -1,4 +1,7 @@
-<fsm>
+#testthisshit
+from drawfsm import *
+
+xml = """<fsm>
     <state label="name" id="1">
         <transition under="b">2</transition>
         <transition under="a">3</transition>
@@ -8,8 +11,7 @@
     </state>
     <state label="name3" id="3">
     </state>
-    <state label="something" id="4">
-        <transition under="a">2</transition>
-        <transition under="k">4</transition>
-    </state>
-</fsm>
+</fsm>"""
+
+fsm = parseXmlFromString(xml)
+print(intoJavascript(fsm))
