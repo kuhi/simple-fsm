@@ -5,3 +5,4 @@
 # Tests #
 #########
 tests/
+src/jsoutput.py

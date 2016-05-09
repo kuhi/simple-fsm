@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified">
+
+    <xsd:element name="fsm">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="state" minOccurs="1" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="transition" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:simpleContent>
+                                        <xsd:extension base="xsd:integer">
+                                            <xsd:attribute name="under" type="xsd:string"/>
+                                        </xsd:extension>
+                                    </xsd:simpleContent>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:attribute name="type" type="type_category" use="required"/>
+                        <xsd:attribute name="label" type="type_nonEmptyString" use="required"/>
+                        <xsd:attribute name="id" type="xsd:integer" use="required"/>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+        <xsd:unique name="StatePrimaryKey">
+            <xsd:selector xpath="state"/>
+            <xsd:field xpath="@id"/>
+        </xsd:unique>
+    </xsd:element>
+
+    <xsd:simpleType name="type_nonEmptyString">
+        <xsd:restriction base="xsd:string">
+            <xsd:minLength value="1"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="type_category" final="restriction">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="if"/>
+            <xsd:enumeration value="r"/>
+            <xsd:enumeration value="f"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

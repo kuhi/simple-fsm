@@ -5,7 +5,7 @@
 #<script type="text/javascript">
 #  // create an array with nodes
 #  var nodes = new vis.DataSet([
-#    {id: 1, label: 'Node 1'}, the label is program-generated, the label is gained from the 
+#    {id: 1, label: 'Node 1'}, 
 #    {id: 2, label: 'Node 2'},
 #    {id: 3, label: 'Node 3'},
 #    {id: 4, label: 'Node 4'},
@@ -46,7 +46,7 @@ def parseXmlFromString(document):
     root = ET.fromstring(document)
     fsm = FSM()
     for state in root.findall('state'):
-        fsm.addState(int(state.get('id')),state.get('label'))
+        fsm.addState(int(state.get('id')),state.get('label'),str(state.get('type')))            
         for transition in state.findall('transition'):
             fsm.addTransition(int(state.get('id')),transition.get('under'),transition.text)
     return fsm
@@ -56,8 +56,15 @@ def intoJavascript(fsm):
     #first, define the nodes
     output = "var nodes = new vis.DataSet([\n"
     
-    for (id,label) in fsm.states:
-        output += "{id:"+str(id)+",label:'"+label+"'},\n"
+    for (id,label,type) in fsm.states:
+        highlight = ""
+        if type == "f":
+            highlight = ",color:{background:'#33cc33'}"
+        elif type == "i":
+            highlight = ",shape:'diamond'"
+        elif type == "if":
+            highlight = ",shape:'diamond',color:{background:'#33cc33'}"
+        output += "{id:"+str(id)+",label:'"+label+"'"+highlight+"},\n"
     
     output = output[:-2] + "\n" #to remove the trailing comma
     
@@ -66,7 +73,7 @@ def intoJavascript(fsm):
     #then transitions
     output += "var edges = new vis.DataSet([\n"
     
-    for (id,label) in fsm.states:
+    for (id,label,_) in fsm.states:
         for (under,to) in fsm.transitions[id]:
             output += "{from:" + str(id) + ",to:"  + to + ",arrows:'to',label:'" + under +"'},\n"
    
@@ -83,6 +90,9 @@ var data = {
 var options = {};
 var network = new vis.Network(container, data, options);"""
     return output
+    
+def computeWord(fsm, word):
+    return fsm.calculate(word)
     
     
     
