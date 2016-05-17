@@ -23,7 +23,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    <li><a href="#contact">Contact</a></li>
                     <li><a href="#help">Help</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -33,19 +33,7 @@
             </div>
         </nav>
         
-        <div class="container">
-            <div class="jumbotron">
-                <form id="scxmlform" method="post" action="{{ url_for('evaluate_fsm') }}">
-                    <h3>Finite State Machine XML:</h3>
-                    <textarea wrap="hard" style="font-family:monospace" class="form-control" style="resize:vertical;" rows="15" name="scxml" form="scxmlform">Enter the xml in SCXML format here.</textarea>
-                    <br/>
-                    <h3>Words to evaluate:</h3>
-                    <textarea wrap="soft" style="font-family:monospace;resize:vertical" class="form-control" style="resize:vertical;" rows="15" name="words" form="scxmlform">Enter words for your automaton to evaluate. Enter one word per line.</textarea>
-                    <br/>
-                    <input class="btn btn-lg btn-success" type="submit" value="Compute" />    
-                </form>
-            </div>
-        </div>
+       <h1>asdfasdfasdf<h1>
         
         
         <script src="{{url_for('static',filename='jquery-1.12.3.min.js')}}"></script>

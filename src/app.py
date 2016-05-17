@@ -12,6 +12,10 @@ app = Flask(__name__)
 def form():
     return render_template('form_submit.html')
 
+@app.route('/#contact/')
+def contact():
+    return render_template('contact.html')
+
 # Define a route for the action of the form, for example '/hello/'
 # We are also defining which type of requests this route is 
 # accepting: POST requests in this case

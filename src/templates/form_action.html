@@ -29,7 +29,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
                     <li><a href="#help">Help</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -44,8 +44,12 @@
             <div class="jumbotron">
                 <h3>XML:</h3> <br> <pre style="white-space:pre-wrap">{{scxml}}</pre> 
                 <br>
-                <h3>WORDS:</h3> <br> <pre>{{words}}</pre>
-                <br>
+                <h3>WORDS:</h3> 
+                {{words.split('\n')}}
+                <pre>{% for word in words %}
+                <li>{%print(word)%}</li>
+                {% endfor %}
+                </pre>
                 <h3>GRAPH:</h3> <br>
                 <div id="displayedGraph"></div>
             </div>
