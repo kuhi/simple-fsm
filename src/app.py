@@ -3,6 +3,15 @@
 # we'll use url_for to get some URLs for the app on the templates
 from flask import Flask, render_template, request, url_for
 from drawfsm import *
+from lxml import etree
+
+def validate(xmlparser, xmlstring):
+    try:
+        etree.fromstring(xmlstring, xmlparser) 
+        return True
+    except Exception as e:  
+        return e
+    #except etree.XMLSchemaError:
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -25,10 +34,27 @@ def help():
 # accepting: POST requests in this case
 @app.route('/evaluate_fsm/', methods=['POST'])
 def evaluate_fsm():
+    with open('fsm_schema.xsd', 'r') as f:
+        print ("Name of the file: ", f.name)
+        schema_root = etree.XML(f.read()) 
+    schema = etree.XMLSchema(schema_root)
+    xmlparser = etree.XMLParser(schema=schema)
     scxml = request.form['scxml']
+    result = validate(xmlparser, scxml)
+    if result == True:
+        print("OK")
+    else:
+        print("NOK")
+        return render_template('invalidInput.html')
+    fsm = parseXmlFromString(scxml)
     out = intoJavascript(parseXmlFromString(scxml))
     words = request.form['words']
-    return render_template('form_action.html', scxml=scxml, words=words,graphvis=out)
+    
+    wordsDict = dict()
+    for word in words.splitlines():
+        wordsDict[word] = fsm.calculate(word)
+    
+    return render_template('form_action.html', scxml = scxml, words = wordsDict, graphvis = out)
 
 # Run the app :)
 if __name__ == '__main__':

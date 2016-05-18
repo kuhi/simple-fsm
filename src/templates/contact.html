@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}"/>  
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vis.min.css') }}"/>         
     </head>
-    <body>
+    <body>  { padding-top: 70px; }
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -32,9 +32,6 @@
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
-        
-       <h1>asdfasdfasdf<h1>
-        
         
         <script src="{{url_for('static',filename='jquery-1.12.3.min.js')}}"></script>
         <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
