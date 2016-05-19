@@ -2,7 +2,7 @@
     <initial_state type="r" label="name" id="1">
         <transition under="b">2</transition>
         <transition under="a">3</transition>
-    </initial_state>
+    </initial>
     <state type="r" label="name2" id="2">
         <transition under="a">3</transition>
     </state>

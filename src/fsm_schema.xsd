@@ -2,7 +2,7 @@
     <xsd:element name="fsm">
         <xsd:complexType>
             <xsd:sequence>
-                <xsd:element name="initial_state" type="type_initial_state" minOccurs="1" maxOccurs="1"/>
+                <xsd:element name="initial" type="type_initial_state" minOccurs="1" maxOccurs="1"/>
                 <xsd:element name="state" type = "type_state" minOccurs="1" maxOccurs="unbounded"/>
             </xsd:sequence>
         </xsd:complexType>
