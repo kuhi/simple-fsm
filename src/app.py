@@ -29,6 +29,26 @@ def contact():
 def help():
     return render_template('help.html')
 
+@app.errorhandler(403)
+def page_forbidden(e):
+    print("page_forbidden")
+    return render_template('403.html'), 403
+
+@app.errorhandler(404)
+def page_not_found(e):
+    print("page_not_found")
+    return render_template('404.html'), 404
+
+@app.errorhandler(410)
+def page_gone(e):
+    print("page_gone")
+    return render_template('410.html'), 410
+
+@app.errorhandler(501)
+def internal_server_error(e):
+    print("internal_server_error")
+    return render_template('501.html'), 501
+
 # Define a route for the action of the form, for example '/hello/'
 # We are also defining which type of requests this route is 
 # accepting: POST requests in this case
