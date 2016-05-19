@@ -45,9 +45,10 @@
                 <h3>XML:</h3> <br> <pre style="white-space:pre-wrap">{{scxml}}</pre> 
                 <br>
                 <h3>WORDS:</h3> 
-                <pre>{% for word in words %}
-                <li>{{word}} {{words[word]}}</li>
-                {% endfor %}
+                <pre>
+                    {% for word in words %}
+                    <li>{{word}} {{words[word]}}</li>
+                    {% endfor %}
                 </pre>
                 <h3>GRAPH:</h3> <br>
                 <div id="displayedGraph"></div>

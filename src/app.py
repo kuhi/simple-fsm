@@ -5,14 +5,6 @@ from flask import Flask, render_template, request, url_for
 from drawfsm import *
 from lxml import etree
 
-def validate(xmlparser, xmlstring):
-    try:
-        etree.fromstring(xmlstring, xmlparser) 
-        return True
-    except Exception as e:  
-        return e
-    #except etree.XMLSchemaError:
-
 # Initialize the Flask application
 app = Flask(__name__)
 
@@ -54,18 +46,23 @@ def internal_server_error(e):
 # accepting: POST requests in this case
 @app.route('/evaluate_fsm/', methods=['POST'])
 def evaluate_fsm():
-    with open('fsm_schema.xsd', 'r') as f:
-        print ("Name of the file: ", f.name)
-        schema_root = etree.XML(f.read()) 
-    schema = etree.XMLSchema(schema_root)
-    xmlparser = etree.XMLParser(schema=schema)
+    
     scxml = request.form['scxml']
-    result = validate(xmlparser, scxml)
-    if result == True:
-        print("OK")
-    else:
-        print("NOK")
-        return render_template('invalidInput.html')
+    schema = etree.parse("fsm_schema.xsd")
+    xmlschema = etree.XMLSchema(schema)
+
+    try:
+        document = etree.fromstring(scxml)
+        print("Parse complete!")
+    except etree.XMLSyntaxError as e:
+        print(e)
+        return render_template('invalidInput.html', error = e)
+        
+    if not xmlschema.validate(document):
+        #for error in xmlschema.error_log:
+        #    print("ERROR ON LINE %s: %s" % (error.line, error.message.encode("utf-8")))
+        return render_template('invalidInput.html', error = xmlschema.error_log.last_error)
+        
     fsm = parseXmlFromString(scxml)
     out = intoJavascript(parseXmlFromString(scxml))
     words = request.form['words']
