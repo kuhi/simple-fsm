@@ -50,13 +50,13 @@ def parseXmlFromString(document):
         type = "i"
     elif str(initial.get('type')) == "f":
         type = "if"
-    fsm.addState(int(initial.get('id')),initial.get('label'),type)
+    fsm.addState(str(initial.get('id')),initial.get('label'),type)
     for transition in initial.findall('transition'):
-        fsm.addTransition(int(initial.get('id')),transition.get('under'),transition.text)
+        fsm.addTransition(str(initial.get('id')),transition.get('under'),transition.text)
     for state in root.findall('state'):
-        fsm.addState(int(state.get('id')),state.get('label'),str(state.get('type')))            
+        fsm.addState(str(state.get('id')),state.get('label'),str(state.get('type')))            
         for transition in state.findall('transition'):
-            fsm.addTransition(int(state.get('id')),transition.get('under'),transition.text)
+            fsm.addTransition(str(state.get('id')),transition.get('under'),transition.text)
     return fsm
         
         
