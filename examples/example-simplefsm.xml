@@ -1,15 +1,27 @@
+<!-- Σ={a,b,c,d}. has the substring 'aba' -->
 <fsm>
-    <initial type="r" label="name" id="1">
-        <transition under="b">2</transition>
-        <transition under="a">3</transition>
-    </initial>
-    <state type="r" label="name2" id="2">
-        <transition under="a">3</transition>
-    </state>
-    <state type="f" label="name3" id="3">
-    </state>
-    <state type="r" label="something" id="4">
+    <initial id="1" type="r" label="I">
         <transition under="a">2</transition>
-        <transition under="k">4</transition>
+        <transition under="b">1</transition>
+        <transition under="c">1</transition>
+        <transition under="d">1</transition>
+    </initial>
+    <state id="2" type="r" label="a-">
+        <transition under="a">1</transition>
+        <transition under="b">3</transition>
+        <transition under="c">1</transition>
+        <transition under="d">1</transition>
+    </state>
+    <state id="3" type="r" label="-b-">
+        <transition under="a">4</transition>
+        <transition under="b">1</transition>
+        <transition under="c">1</transition>
+        <transition under="d">1</transition>
+    </state>
+    <state id="4" type="f" label="-a">
+        <transition under="a">4</transition>
+        <transition under="b">4</transition>
+        <transition under="c">4</transition>
+        <transition under="d">4</transition>
     </state>
 </fsm>

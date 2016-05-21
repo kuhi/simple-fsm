@@ -32,24 +32,19 @@ class FSM:
         
     def transition(self, stateId, letter):
         newstate = "0"
-        print("transitioning from " + str(stateId) + " under " + str(letter))
+        print("Transitioning from " + str(stateId) + " under " + str(letter))
         if stateId in self.transitions.keys():
             destinations = self.transitions[stateId]
             for (under, to) in destinations:
                 if under == letter:
                     newstate = to
                     break
-            print("transitioned to " + newstate)
+            print("Transitioned to " + newstate)
             return newstate
         else:
             return "0"
 
     def calculate(self, word):
-        print(self.alphabet)
-        print(self.states)
-        print(self.transitions)
-        print(self.initial)
-        print(self.final)
         state = self.initial
         if set(word).issubset(self.alphabet):
             for letter in word:

@@ -46,6 +46,7 @@
                 <br>
                 <pre style="white-space:pre-wrap">{{scxml}}</pre> 
                 <br>
+                <p>Be aware that the <span style="color:green">ε</span> letter is in this case used to represent a space (" ") rather than an empty string!</p>
                 <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -89,13 +90,6 @@
         <script src="{{ url_for('static',filename='jquery.autogrowtextarea.min.js' ) }}"></script>
         <script src="{{ url_for('static',filename='jquery-linedtextarea.js') }}"></script>
         <script src="{{ url_for('static',filename='vis.min.js') }}"></script>
-        <script>
-            $(document).ready(function() {
-                $(".form-control").autoGrow({
-                    extraLine: true
-                });
-            });
-        </script>
         <script>
             {{graphvis|safe}}
         </script>
