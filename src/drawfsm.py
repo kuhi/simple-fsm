@@ -45,6 +45,14 @@ def parseXmlFromString(document):
     #parse the xml and create an empty finite state machine
     root = ET.fromstring(document)
     fsm = FSM()
+    initial = root.find('initial')
+    if str(initial.get('type')) == "r":
+        type = "i"
+    elif str(initial.get('type')) == "f":
+        type = "if"
+    fsm.addState(int(initial.get('id')),initial.get('label'),type)
+    for transition in initial.findall('transition'):
+        fsm.addTransition(int(initial.get('id')),transition.get('under'),transition.text)
     for state in root.findall('state'):
         fsm.addState(int(state.get('id')),state.get('label'),str(state.get('type')))            
         for transition in state.findall('transition'):

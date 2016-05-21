@@ -1,5 +1,5 @@
 <fsm>
-    <initial_state type="r" label="name" id="1">
+    <initial type="r" label="name" id="1">
         <transition under="b">2</transition>
         <transition under="a">3</transition>
     </initial>

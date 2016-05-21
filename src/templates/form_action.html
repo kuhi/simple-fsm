@@ -33,6 +33,7 @@
                     <li><a href="{{ url_for('help') }}">Help</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://glyphicons.com/">Glyphicons</a></li>
                     <li><a href="http://github.com/kuhi/simple-fsm">GitHub</a></li>
                 </ul>
                 </div><!--/.nav-collapse -->
@@ -42,15 +43,42 @@
     
         <div class="container">
             <div class="jumbotron">
-                <h3>XML:</h3> <br> <pre style="white-space:pre-wrap">{{scxml}}</pre> 
                 <br>
-                <h3>WORDS:</h3> 
-                <pre>
-                    {% for word in words %}
-                    <li>{{word}} {% if not words[word] %} <span class="glyphicon glyphicon-remove"></span> {% else %} <span class="glyphicon glyphicon-ok"></span>{% endif %}</li>
-                    {% endfor %}
-                </pre>
-                <h3>GRAPH:</h3> <br>
+                <pre style="white-space:pre-wrap">{{scxml}}</pre> 
+                <br>
+                <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Input word</th>
+                            <th>Automata result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for word in words %}
+                        <tr>
+                            <td>
+                            {% for letter in word %}
+                                {% if letter == " " %}
+                                    <span style="color:green">ε</span>
+                                {% else %}
+                                    {{letter}}
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>
+                            {% if not words[word] %} 
+                                <span class="glyphicon glyphicon-remove"></span> 
+                            {% else %} 
+                                <span class="glyphicon glyphicon-ok"></span>
+                            {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                <br>
                 <div id="displayedGraph"></div>
             </div>
         </div>

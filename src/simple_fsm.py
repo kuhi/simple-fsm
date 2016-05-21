@@ -15,7 +15,7 @@ class FSM:
     initial = 0
     final = set()
     
-    def addState(self, id, label, type):
+    def addState(self, id, label, type = "r"):
         self.states.add((id,label,type))
         if type == "if":
             self.initial = id
