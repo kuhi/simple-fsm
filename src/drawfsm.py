@@ -45,20 +45,27 @@ def parseXmlFromString(document):
     #parse the xml and create an empty finite state machine
     root = ET.fromstring(document)
     fsm = FSM()
-    initial = root.find('initial')
-    if str(initial.get('type')) == "r":
-        type = "i"
-    elif str(initial.get('type')) == "f":
-        type = "if"
-    fsm.addState(str(initial.get('id')),initial.get('label'),type)
-    for transition in initial.findall('transition'):
-        fsm.addTransition(str(initial.get('id')),transition.get('under'),transition.text)
+    i=0
     for state in root.findall('state'):
-        fsm.addState(str(state.get('id')),state.get('label'),str(state.get('type')))            
+        if not i:
+            type = str(state.get('type'))
+            if type == "r":
+                type = "i"
+            elif type == "f":
+                type = "if"
+            fsm.addState(str(state.get('id')),state.get('label'),type)
+            i+=1
+        else:
+            fsm.addState(str(state.get('id')),state.get('label'),str(state.get('type')))            
         for transition in state.findall('transition'):
             fsm.addTransition(str(state.get('id')),transition.get('under'),transition.text)
     return fsm
         
+def serializeLetters(input):
+    output = ""
+    for i in input:
+        output += str(i) + ","
+    return output[:-1]
         
 def intoJavascript(fsm):
     #first, define the nodes
@@ -82,8 +89,16 @@ def intoJavascript(fsm):
     output += "var edges = new vis.DataSet([\n"
     
     for (id,label,_) in fsm.states:
+        toTrans = dict()
         for (under,to) in fsm.transitions[id]:
-            output += "{from:" + str(id) + ",to:"  + to + ",arrows:'to',label:'" + under +"'},\n"
+            try:
+                toTrans[to].append(under)
+            except:
+                toTrans[to] = []
+                toTrans[to].append(under)
+        for finalNode in toTrans.keys():
+            
+            output += "{from:" + str(id) + ",to:"  + finalNode + ",arrows:'to',label:'" + serializeLetters(toTrans[finalNode]) +"'},\n"
    
     output = output[:-2] + "\n" 
     

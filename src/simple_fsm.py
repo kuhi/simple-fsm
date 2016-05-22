@@ -1,12 +1,5 @@
 #simple-fsm main evaluation module  (class and function definitions)
 
-class TransitionException(Exception):
-    def __init__(self, value):
-        self.value = value
-    def __str__(self):
-        return repr(self.value)
-
-
 class FSM:
 
     alphabet = set()
@@ -31,7 +24,7 @@ class FSM:
         self.transitions[stateId].append((under,to))
         
     def transition(self, stateId, letter):
-        newstate = "0"
+        newstate = "-1"
         print("Transitioning from " + str(stateId) + " under " + str(letter))
         if stateId in self.transitions.keys():
             destinations = self.transitions[stateId]
@@ -42,16 +35,19 @@ class FSM:
             print("Transitioned to " + newstate)
             return newstate
         else:
-            return "0"
+            return "-1"
 
     def calculate(self, word):
         state = self.initial
         if set(word).issubset(self.alphabet):
             for letter in word:
                 state = self.transition(state, letter)
-            return str(state) in self.final
+            if str(state) in self.final:
+                return (True, "Word reached a final state.")
+            else:
+                return (False, "Word didn't reach a final state.")
         else:
-            return False
+            return (False, "Invalid letter found.")
             
         
     
