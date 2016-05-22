@@ -2,11 +2,21 @@
 
 class FSM:
 
-    alphabet = set()
-    states = set()
-    transitions = dict()
-    initial = "0"
-    final = set()
+    def __init__(self):
+        self.alphabet = set()
+        self.states = set()
+        self.transitions = dict()
+        self.initial = "0"
+        self.final = set()
+    
+    def __str__(self):
+        out = ""
+        out += "Alphabet: " + str(self.alphabet) + "\n"
+        out += "States: " + str(self.states) + "\n"
+        out += "Transitions: " + str(self.transitions) + "\n"
+        out += "Initial state: " + str(self.initial) + "\n"
+        out += "Final states: " + str(self.final) + "\n"
+        return out
     
     def addState(self, id, label, type = "r"):
         self.states.add((id,label,type))

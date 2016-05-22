@@ -49,6 +49,7 @@ def evaluate_fsm():
     fsm = FSM()
     out = ""
     scxml = request.form['scxml']
+    print(scxml)
     schema = etree.parse("fsm_schema.xsd")
     xmlschema = etree.XMLSchema(schema)
 
@@ -65,6 +66,7 @@ def evaluate_fsm():
         return render_template('invalidInput.html', error = xmlschema.error_log.last_error)
         
     fsm = parseFsmFromStringXml(scxml)
+    print(fsm)
     out = intoJavaScript(fsm)
     
     words = request.form['words']

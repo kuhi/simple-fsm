@@ -44,7 +44,7 @@ import xml.etree.ElementTree as ET
 def parseFsmFromStringXml(document):
     #parse the xml and create an empty finite state machine
     root = ET.fromstring(document)
-    fsm = FSM()
+    newfsm = FSM()
     i=0
     for state in root.findall('state'):
         if not i:
@@ -53,13 +53,13 @@ def parseFsmFromStringXml(document):
                 type = "i"
             elif type == "f":
                 type = "if"
-            fsm.addState(str(state.get('id')),state.get('label'),type)
+            newfsm.addState(str(state.get('id')),state.get('label'),type)
             i+=1
         else:
-            fsm.addState(str(state.get('id')),state.get('label'),str(state.get('type')))            
+            newfsm.addState(str(state.get('id')),state.get('label'),str(state.get('type')))            
         for transition in state.findall('transition'):
-            fsm.addTransition(str(state.get('id')),transition.get('under'),transition.text)
-    return fsm
+            newfsm.addTransition(str(state.get('id')),transition.get('under'),transition.text)
+    return newfsm
         
 def serializeLetters(input):
     output = ""
@@ -112,7 +112,6 @@ var data = {
 };
 var options = {};
 var network = new vis.Network(container, data, options);"""
-    print(output)
     return output
     
 def computeWord(fsm, word):
