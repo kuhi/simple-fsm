@@ -46,7 +46,8 @@ def internal_server_error(e):
 # accepting: POST requests in this case
 @app.route('/evaluate_fsm/', methods=['POST'])
 def evaluate_fsm():
-    
+    fsm = FSM()
+    out = ""
     scxml = request.form['scxml']
     schema = etree.parse("fsm_schema.xsd")
     xmlschema = etree.XMLSchema(schema)
@@ -63,8 +64,9 @@ def evaluate_fsm():
         #    print("ERROR ON LINE %s: %s" % (error.line, error.message.encode("utf-8")))
         return render_template('invalidInput.html', error = xmlschema.error_log.last_error)
         
-    fsm = parseXmlFromString(scxml)
-    out = intoJavascript(parseXmlFromString(scxml))
+    fsm = parseFsmFromStringXml(scxml)
+    out = intoJavaScript(fsm)
+    
     words = request.form['words']
     
     wordsDict = dict()

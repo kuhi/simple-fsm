@@ -41,7 +41,7 @@
 from simple_fsm import *
 import xml.etree.ElementTree as ET
 
-def parseXmlFromString(document):
+def parseFsmFromStringXml(document):
     #parse the xml and create an empty finite state machine
     root = ET.fromstring(document)
     fsm = FSM()
@@ -67,7 +67,7 @@ def serializeLetters(input):
         output += str(i) + ","
     return output[:-1]
         
-def intoJavascript(fsm):
+def intoJavaScript(fsm):
     #first, define the nodes
     output = "var nodes = new vis.DataSet([\n"
     
@@ -112,6 +112,7 @@ var data = {
 };
 var options = {};
 var network = new vis.Network(container, data, options);"""
+    print(output)
     return output
     
 def computeWord(fsm, word):
