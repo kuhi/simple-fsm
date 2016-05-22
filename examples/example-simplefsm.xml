@@ -1,11 +1,11 @@
 <!-- Σ={a,b,c,d}. has the substring 'aba' -->
 <fsm>
-    <initial id="1" type="r" label="I">
+    <state id="1" type="r" label="initial">
         <transition under="a">2</transition>
         <transition under="b">1</transition>
         <transition under="c">1</transition>
         <transition under="d">1</transition>
-    </initial>
+    </state>
     <state id="2" type="r" label="a-">
         <transition under="a">1</transition>
         <transition under="b">3</transition>
