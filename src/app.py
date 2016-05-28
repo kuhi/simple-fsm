@@ -36,10 +36,10 @@ def page_gone(e):
     print("page_gone")
     return render_template('410.html'), 410
 
-@app.errorhandler(501)
+@app.errorhandler(500)
 def internal_server_error(e):
     print("internal_server_error")
-    return render_template('501.html'), 501
+    return render_template('500.html'), 501
 
 # Define a route for the action of the form, for example '/hello/'
 # We are also defining which type of requests this route is 
@@ -49,7 +49,6 @@ def evaluate_fsm():
     fsm = FSM()
     out = ""
     scxml = request.form['scxml']
-    print(scxml)
     schema = etree.parse("fsm_schema.xsd")
     xmlschema = etree.XMLSchema(schema)
 
@@ -66,7 +65,6 @@ def evaluate_fsm():
         return render_template('invalidInput.html', error = xmlschema.error_log.last_error)
         
     fsm = parseFsmFromStringXml(scxml)
-    print(fsm)
     out = intoJavaScript(fsm)
     
     words = request.form['words']
