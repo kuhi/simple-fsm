@@ -49,12 +49,15 @@ class FSM:
 
     def calculate(self, word):
         state = self.initial
+        trans = set()
         if set(word).issubset(self.alphabet):
             for letter in word:
-                state = self.transition(state, letter)
-            if str(state) in self.final:
+                newstate = self.transition(state, letter)
+                trans.add((state,newstate))
+                state = newstate
+            if str(newstate) in self.final:
                 print("OK")
-                return (True, "Word reached a final state.")
+                return (True, trans)
             else:
                 print("NOK")
                 return (False, "Word didn't reach a final state.")

@@ -66,28 +66,11 @@ def serializeLetters(input):
     for i in input:
         output += str(i) + ","
     return output[:-1]
-        
-def fsmIntoJavaScript(fsm):
-    #first, define the nodes
-    output = "var nodes = new vis.DataSet([\n"
     
-    for (id,label,type) in fsm.states:
-        highlight = ""
-        if type == "f":
-            highlight = ",color:{background:'#33cc33'}"
-        elif type == "i":
-            highlight = ",shape:'diamond'"
-        elif type == "if":
-            highlight = ",shape:'diamond',color:{background:'#33cc33'}"
-        output += "{id:"+str(id)+",label:'"+label+"'"+highlight+"},\n"
-    
-    output = output[:-2] + "\n" #to remove the trailing comma
-    
-    output += "]);\n"
-    
-    #then transitions
-    output += "var edges = new vis.DataSet([\n"
-    
+def getEdgeIds(fsm):
+    print("getting edge ids")
+    edgeId = 0
+    edges = []
     for (id,label,_) in fsm.states:
         toTrans = dict()
         for (under,to) in fsm.transitions[id]:
@@ -97,13 +80,32 @@ def fsmIntoJavaScript(fsm):
                 toTrans[to] = []
                 toTrans[to].append(under)
         for finalNode in toTrans.keys():
-            
-            output += "{from:" + str(id) + ",to:"  + finalNode + ",arrows:'to',label:'" + serializeLetters(toTrans[finalNode]) +"'},\n"
-   
-    output = output[:-2] + "\n" 
+            edges.append((str(edgeId),str(id),finalNode,serializeLetters(toTrans[finalNode])))
+            edgeId += 1
+    print(edges)
+    return edges
+                
     
+def fsmIntoJavaScript(fsm, edges):
+    #first, define the nodes
+    output = "var nodes = new vis.DataSet([\n" 
+    for (id,label,type) in fsm.states:
+        highlight = ""
+        if type == "f":
+            highlight = ",color:{background:'#33cc33'}"
+        elif type == "i":
+            highlight = ",shape:'diamond'"
+        elif type == "if":
+            highlight = ",shape:'diamond',color:{background:'#33cc33'}"
+        output += "{id:"+str(id)+",label:'"+label+"'"+highlight+"},\n"
+    output = output[:-2] + "\n" #to remove the trailing comma   
     output += "]);\n"
-    
+    #then transitions
+    output += "var edges = new vis.DataSet([\n"
+    for (edgeId,stateId,finalNode,letters) in edges:
+        output += "{id:"+edgeId+",from:" + stateId + ",to:"  + finalNode + ",arrows:'to',label:'" + letters +"'},\n"
+    output = output[:-2] + "\n" 
+    output += "]);\n"    
     output += """
 var container = document.getElementById('displayedGraph');
 var data = {
@@ -112,15 +114,24 @@ var data = {
 };
 var options = {};
 var network = new vis.Network(container, data, options);"""
-    return output
-    
-def viewTransitionOnClickJs(word, transitions = None):
-    print(word)
-    output = "$( \"#" + word + "\").click(function() {\n"
-    output += "alert(\"View transition for "+word+" called.\");\n"
-    output += "});\n"
     print(output)
     return output
+    
+#edges: (edge id, starting state id, end state id, letters as a string e.g. 1,2,3,4)
+def viewTransitionOnClickJs(word, edges,path):
+    print(word)
+    if path[0]:
+        output = "$( \"#"+word+"\").click(function() {\n"
+        for (eid,sid,fid,let) in edges:
+            if (sid,fid) in path[1]:
+                output += "edges.update({id:"+eid+",from:"+sid+",to:"+fid+",arrows:'to',label:'"+let+"',color:'green'});\n"
+            else:
+                output += "edges.update({id:"+eid+",from:"+sid+",to:"+fid+",arrows:'to',label:'"+let+"',color:'#2B7CE9'});\n"
+        output += "});\n"
+        print(output)
+        return output
+    else:
+        return ""
     
 def computeWord(fsm, word):
     return fsm.calculate(word)

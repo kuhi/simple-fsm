@@ -65,14 +65,17 @@ def evaluate_fsm():
         return render_template('invalidInput.html', error = xmlschema.error_log.last_error)
         
     fsm = parseFsmFromStringXml(scxml)
-    out = fsmIntoJavaScript(fsm)
+    edges = getEdgeIds(fsm)
+    out = fsmIntoJavaScript(fsm,edges)
     
     words = request.form['words']
     transitionscripts = ""
     wordsDict = dict()
     for word in words.splitlines():
-        transitionscripts += viewTransitionOnClickJs(word, fsm)
+        print("calculating word")
         wordsDict[word] = fsm.calculate(word)
+        print("getting transcripts")
+        transitionscripts += viewTransitionOnClickJs(word, edges, wordsDict[word])
     print('Rendering template')
     return render_template('form_action.html', scxml = scxml, words = wordsDict, graphvis = out, transitionscripts = transitionscripts )
 
