@@ -53,19 +53,21 @@
                         <tr>
                             <th>Input word</th>
                             <th>Automata result</th>
+                            <th>Transitions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for word in words %}
                         <tr>
                             <td>{% for letter in word %}{% if letter == " " %}<span style="color:green">ε</span>{% else %}{{letter}}{% endif %}{% endfor %}</td>
-                            <td>
+                            
                             {% if not words[word][0] %} 
-                                <span style="color:red" class="glyphicon glyphicon-remove"></span> {{words[word][1]}}
+                                <td><span style="color:red" class="glyphicon glyphicon-remove"></span> {{words[word][1]}} </td>
+                                <td/>
                             {% else %} 
-                                <span style="color:green" class="glyphicon glyphicon-ok"></span>
+                                <td><span style="color:green" class="glyphicon glyphicon-ok"></span></td>
+                                <td><a class="button btn-primary btn-xs" href="#displayedGraph" id="{%print(word)%}">View transition</a></td>
                             {% endif %}
-                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -82,5 +84,6 @@
         <script src="{{ url_for('static',filename='vis.min.js') }}"></script>
         <script>
             {{graphvis|safe}}
+            {{transitionscripts|safe}}
         </script>
     </body>

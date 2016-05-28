@@ -67,7 +67,7 @@ def serializeLetters(input):
         output += str(i) + ","
     return output[:-1]
         
-def intoJavaScript(fsm):
+def fsmIntoJavaScript(fsm):
     #first, define the nodes
     output = "var nodes = new vis.DataSet([\n"
     
@@ -112,6 +112,14 @@ var data = {
 };
 var options = {};
 var network = new vis.Network(container, data, options);"""
+    return output
+    
+def viewTransitionOnClickJs(word, transitions = None):
+    print(word)
+    output = "$( \"#" + word + "\").click(function() {\n"
+    output += "alert(\"View transition for "+word+" called.\");\n"
+    output += "});\n"
+    print(output)
     return output
     
 def computeWord(fsm, word):

@@ -53,8 +53,10 @@ class FSM:
             for letter in word:
                 state = self.transition(state, letter)
             if str(state) in self.final:
+                print("OK")
                 return (True, "Word reached a final state.")
             else:
+                print("NOK")
                 return (False, "Word didn't reach a final state.")
         else:
             return (False, "Invalid letter found.")
