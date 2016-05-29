@@ -21,8 +21,8 @@ with open('conf.txt', 'r') as f:
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USERNAME"] = data[0]
-app.config["MAIL_PASSWORD"] = data[1]
+app.config["MAIL_USERNAME"] = data[0].strip()
+app.config["MAIL_PASSWORD"] = data[1].strip()
 
 mail.init_app(app)
 
@@ -33,32 +33,26 @@ def form():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-  print("p")
   form = ContactForm()
-  print("o")
 
   if request.method == 'POST':
     if form.validate() == False:
       flash('All fields are required.')
       return render_template('contact.html', form=form)
     else:
-      print("d")
       msg = Message(form.subject.data, sender="simple.fsm@gmail.com", recipients=["marek.vancik@gmail.com"])
-      print("u")
       try:
        #msg.body = ' '
         msg.body = """
         From: %s <%s>
         %s
         """ % (form.name.data, form.email.data, form.message.data)
-        print("z")
         mail.send(msg)
       except Exception as e:
         #to tu je len aby mi to vypisalo rovno na stranke co nedjde
         print(e)
         traceback.print_exc()
         return render_template('invalidInput.html', error = e)
-      print("aaaaa")
       return render_template('contact.html', success=True)
 
   elif request.method == 'GET':
