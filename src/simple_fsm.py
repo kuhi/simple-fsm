@@ -47,7 +47,9 @@ class FSM:
         else:
             return "-1"
 
-    def calculate(self, word):
+    def calculate(self, word, disallowedWords = None):
+        if word in disallowedWords:
+            return (False, "Disallowed word!")
         state = self.initial
         trans = set()
         if set(word).issubset(self.alphabet):

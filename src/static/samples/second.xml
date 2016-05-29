@@ -1,0 +1,19 @@
+<!-- {a,b}*.{c}.{aa,b}*.{d}+ -->
+<fsm>
+    <state id="1" label="init" type="r">
+        <transition under="a">1</transition>
+        <transition under="b">1</transition>
+        <transition under="c">2</transition>
+    </state>
+    <state id="2" label="2" type="r">
+        <transition under="b">2</transition>
+        <transition under="a">3</transition>
+        <transition under="d">4</transition>
+    </state>
+    <state id="3" label="3" type="r">
+        <transition under="a">2</transition>
+    </state>
+    <state id="4" label="final" type="f">
+        <transition under="d">4</transition>
+    </state>
+</fsm>
