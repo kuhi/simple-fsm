@@ -37,10 +37,18 @@
             <div class="jumbotron">
                 <form id="scxmlform" method="post" action="{{ url_for('evaluate_fsm') }}">
                     <h3>Finite State Machine XML:</h3>
-                    <textarea wrap="hard" style="font-family:monospace" class="form-control" style="resize:vertical;" rows="15" name="scxml" form="scxmlform">Enter the xml in FSM-XML format here. An explanation on how to represent a Finite State machine using the FSM-XML format is on this site's Help section.</textarea>
+                    <div class="dropdown">
+                        <button class="btn btn-xs btn-success dropdown-toggle" type="button" data-toggle="dropdown">Samples<span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#scxml" id="aba-substring">"aba" substring</a></li>
+                            <li><a href="#scxml" id="second">{a,b}*.{c}.{aa,b}*.{d}+</a></li>
+                            <li><a href="#scxml" id="third">Random</a></li>
+                        </ul>
+                    </div><br>
+                    <textarea wrap="hard" style="font-family:monospace" class="form-control" style="resize:vertical;" rows="15" name="scxml" id="scxml" form="scxmlform">Enter the xml in FSM-XML format here. An explanation on how to represent a Finite State machine using the FSM-XML format is on this site's Help section.</textarea>
                     <br/>
                     <h3>Words to evaluate:</h3>
-                    <textarea wrap="soft" style="font-family:monospace;resize:vertical" class="form-control" style="resize:vertical;" rows="15" name="words" form="scxmlform">Enter words for your automaton to evaluate. Enter one word per line.</textarea>
+                    <textarea wrap="soft" style="font-family:monospace;resize:vertical" class="form-control" style="resize:vertical;" rows="15" name="words" id="words" form="scxmlform">Enter words for your automaton to evaluate. Enter one word per line.</textarea>
                     <br/>
                     <input class="btn btn-lg btn-success" type="submit" value="Compute" />    
                 </form>
@@ -57,6 +65,57 @@
                     extraLine: true
                 });
             });
+            $("#aba-substring").click(function() {
+                $('#scxml').html(`&lt;!-- Σ={a,b,c,d}. has the substring 'aba' --&gt;
+&lt;fsm&gt;
+    &lt;state id=&quot;1&quot; type=&quot;r&quot; label=&quot;initial&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;2&lt;/transition&gt;
+        &lt;transition under=&quot;b&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;c&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;d&quot;&gt;1&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;2&quot; type=&quot;r&quot; label=&quot;a-&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;b&quot;&gt;3&lt;/transition&gt;
+        &lt;transition under=&quot;c&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;d&quot;&gt;1&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;3&quot; type=&quot;r&quot; label=&quot;-b-&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;4&lt;/transition&gt;
+        &lt;transition under=&quot;b&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;c&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;d&quot;&gt;1&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;4&quot; type=&quot;f&quot; label=&quot;-a&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;4&lt;/transition&gt;
+        &lt;transition under=&quot;b&quot;&gt;4&lt;/transition&gt;
+        &lt;transition under=&quot;c&quot;&gt;4&lt;/transition&gt;
+        &lt;transition under=&quot;d&quot;&gt;4&lt;/transition&gt;
+    &lt;/state&gt;
+&lt;/fsm&gt;`);
+            });
+            $("#second").click(function() {
+                $('#scxml').html(`&lt;!-- {a,b}*.{c}.{aa,b}*.{d}+ --&gt;
+&lt;fsm&gt;
+    &lt;state id=&quot;1&quot; label=&quot;init&quot; type=&quot;r&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;b&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;c&quot;&gt;2&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;2&quot; label=&quot;2&quot; type=&quot;r&quot;&gt;
+        &lt;transition under=&quot;b&quot;&gt;2&lt;/transition&gt;
+        &lt;transition under=&quot;a&quot;&gt;3&lt;/transition&gt;
+        &lt;transition under=&quot;d&quot;&gt;4&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;3&quot; label=&quot;3&quot; type=&quot;r&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;2&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;4&quot; label=&quot;final&quot; type=&quot;f&quot;&gt;
+        &lt;transition under=&quot;d&quot;&gt;4&lt;/transition&gt;
+    &lt;/state&gt;
+&lt;/fsm&gt;`);
+            });
+            
         </script>
     </body>
 </html>

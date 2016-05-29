@@ -1,43 +1,5 @@
 #process xml and feed it into the fsm
 #produce the vis.js script necessary to draw the graph
-#
-#example from visjs.org
-#<script type="text/javascript">
-#  // create an array with nodes
-#  var nodes = new vis.DataSet([
-#    {id: 1, label: 'Node 1'}, 
-#    {id: 2, label: 'Node 2'},
-#    {id: 3, label: 'Node 3'},
-#    {id: 4, label: 'Node 4'},
-#    {id: 5, label: 'Node 5'},
-#    {id: 6, label: 'Node 6'},
-#    {id: 7, label: 'Node 7'},
-#    {id: 8, label: 'Node 8'}
-#  ]);
-#
-#  // create an array with edges
-#  var edges = new vis.DataSet([
-#    {from: 1, to: 8, arrows:'to', dashes:true},
-#    {from: 1, to: 3, arrows:'to'},
-#    {from: 1, to: 2, arrows:'to, from'},
-#    {from: 2, to: 4, arrows:'to, middle'},
-#    {from: 2, to: 5, arrows:'to, middle, from'},
-#    {from: 5, to: 6, arrows:{to:{scaleFactor:2}}},
-#    {from: 6, to: 7, arrows:{middle:{scaleFactor:0.5},from:true}}
-#  ]);
-#
-#  // create a network
-#  var container = document.getElementById('mynetwork');
-#  var data = {
-#    nodes: nodes,
-#    edges: edges
-#  };
-#  var options = {};
-#  var network = new vis.Network(container, data, options);
-#</script>
-
-
-#import simple-fsm as SFSM
 from simple_fsm import *
 import xml.etree.ElementTree as ET
 
@@ -88,7 +50,7 @@ def getEdgeIds(fsm):
     
 def fsmIntoJavaScript(fsm, edges):
     #first, define the nodes
-    output = "var nodes = new vis.DataSet([\n" 
+    output = "\tvar nodes = new vis.DataSet([\n" 
     for (id,label,type) in fsm.states:
         highlight = ""
         if type == "f":
@@ -97,44 +59,43 @@ def fsmIntoJavaScript(fsm, edges):
             highlight = ",shape:'diamond'"
         elif type == "if":
             highlight = ",shape:'diamond',color:{background:'#33cc33'}"
-        output += "{id:"+str(id)+",label:'"+label+"'"+highlight+"},\n"
+        output += "\t\t{id:"+str(id)+",label:'"+label+"'"+highlight+"},\n"
     output = output[:-2] + "\n" #to remove the trailing comma   
-    output += "]);\n"
+    output += "\t]);\n"
     #then transitions
-    output += "var edges = new vis.DataSet([\n"
+    output += "\tvar edges = new vis.DataSet([\n"
     for (edgeId,stateId,finalNode,letters) in edges:
-        output += "{id:"+edgeId+",from:" + stateId + ",to:"  + finalNode + ",arrows:'to',label:'" + letters +"'},\n"
+        output += "\t\t{id:"+edgeId+",from:" + stateId + ",to:"  + finalNode + ",arrows:'to',label:'" + letters +"'},\n"
     output = output[:-2] + "\n" 
-    output += "]);\n"    
+    output += "\t]);\n"    
     output += """
-var container = document.getElementById('displayedGraph');
-var data = {
-    nodes: nodes,
-    edges: edges
-};
-var options = {};
-var network = new vis.Network(container, data, options);"""
+\tvar container = document.getElementById('displayedGraph');
+\tvar data = {
+\t\tnodes: nodes,
+\t\tedges: edges
+\t};
+\tvar options = {};
+\tvar network = new vis.Network(container, data, options);"""
     print(output)
     return output
     
 #edges: (edge id, starting state id, end state id, letters as a string e.g. 1,2,3,4)
-def viewTransitionOnClickJs(word, edges,path):
-    print(word)
+def viewTransitionOnClickJs(word, edges, path):
     if path[0]:
-        output = "$( \"#"+word+"\").click(function() {\n"
+        output = "\t$( \"#"+word+"\").click(function() {\n"
         for (eid,sid,fid,let) in edges:
-            if (sid,fid) in path[1]:
-                output += "edges.update({id:"+eid+",from:"+sid+",to:"+fid+",arrows:'to',label:'"+let+"',color:'green'});\n"
+            if (sid,fid) in path[1] and word != "resetgraph":
+                output += "\t\tedges.update({id:"+eid+",from:"+sid+",to:"+fid+",arrows:'to',label:'"+let+"',color:'green'});\n"
             else:
-                output += "edges.update({id:"+eid+",from:"+sid+",to:"+fid+",arrows:'to',label:'"+let+"',color:'#2B7CE9'});\n"
-        output += "});\n"
+                output += "\t\tedges.update({id:"+eid+",from:"+sid+",to:"+fid+",arrows:'to',label:'"+let+"',color:'#2B7CE9'});\n"
+        output += "\t});\n"
         print(output)
         return output
     else:
         return ""
     
 def computeWord(fsm, word):
-    return fsm.calculate(word)
+    return fsm.calculate(word, ['resetgraph','displayedGraph','navbar'])
     
     
     
