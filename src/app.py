@@ -1,21 +1,63 @@
 # We need to import request to access the details of the POST request
 # and render_template, to render our templates (form and response)
 # we'll use url_for to get some URLs for the app on the templates
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, flash
 from drawfsm import *
 from lxml import etree
+from forms import ContactForm
+from flask.ext.mail import Message, Mail
 
 # Initialize the Flask application
+mail = Mail()
+
 app = Flask(__name__)
+
+app.secret_key = 'mega secret open source development key 008'
+
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USE_SSL"] = True
+app.config["MAIL_USERNAME"] = 'simple.fsm@gmail.com'
+app.config["MAIL_PASSWORD"] = 'heslo123456'
+
+mail.init_app(app)
 
 # Define a route for the default URL, which loads the form
 @app.route('/')
 def form():
     return render_template('form_submit.html')
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html')
+  print("p")
+  form = ContactForm()
+  print("o")
+
+  if request.method == 'POST':
+    if form.validate() == False:
+      flash('All fields are required.')
+      return render_template('contact.html', form=form)
+    else:
+      print("d")
+      msg = Message(form.subject.data, sender="a", recipients=["b"])
+      print("u")
+      try:
+        #msg.body = ' '
+       # msg.body = """
+       # From: %s <%s>
+       # %s
+       # """ % (form.name.data, form.email.data, form.message.data)
+        print("z")
+        mail.send(msg)
+      except Exception as e:
+        print(e)
+        return render_template('invalidInput.html', error = e)
+      print("aaaaa")
+      return render_template('contact.html', success=True)
+
+  elif request.method == 'GET':
+    print("b")
+    return render_template('contact.html', form=form)
 
 @app.route('/help')
 def help():
