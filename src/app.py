@@ -6,6 +6,7 @@ from drawfsm import *
 from lxml import etree
 from forms import ContactForm
 from flask.ext.mail import Message, Mail
+import traceback
 
 # Initialize the Flask application
 mail = Mail()
@@ -14,11 +15,14 @@ app = Flask(__name__)
 
 app.secret_key = 'mega secret open source development key 008'
 
+with open('conf.txt', 'r') as f:
+    data = f.readlines()
+
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USERNAME"] = 'simple.fsm@gmail.com'
-app.config["MAIL_PASSWORD"] = 'heslo123456'
+app.config["MAIL_USERNAME"] = data[0]
+app.config["MAIL_PASSWORD"] = data[1]
 
 mail.init_app(app)
 
@@ -52,6 +56,7 @@ def contact():
       except Exception as e:
         #to tu je len aby mi to vypisalo rovno na stranke co nedjde
         print(e)
+        traceback.print_exc()
         return render_template('invalidInput.html', error = e)
       print("aaaaa")
       return render_template('contact.html', success=True)

@@ -6,3 +6,7 @@
 #########
 tests/
 src/jsoutput.py
+
+# Pasword and Mail #
+#########
+src/conf.txt
