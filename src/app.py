@@ -39,17 +39,18 @@ def contact():
       return render_template('contact.html', form=form)
     else:
       print("d")
-      msg = Message(form.subject.data, sender="a", recipients=["b"])
+      msg = Message(form.subject.data, sender="simple.fsm@gmail.com", recipients=["marek.vancik@gmail.com"])
       print("u")
       try:
-        #msg.body = ' '
-       # msg.body = """
-       # From: %s <%s>
-       # %s
-       # """ % (form.name.data, form.email.data, form.message.data)
+       #msg.body = ' '
+        msg.body = """
+        From: %s <%s>
+        %s
+        """ % (form.name.data, form.email.data, form.message.data)
         print("z")
         mail.send(msg)
       except Exception as e:
+        #to tu je len aby mi to vypisalo rovno na stranke co nedjde
         print(e)
         return render_template('invalidInput.html', error = e)
       print("aaaaa")
@@ -89,10 +90,11 @@ def internal_server_error(e):
 @app.route('/evaluate_fsm/', methods=['POST'])
 def evaluate_fsm():
     fsm = FSM()
+    out = ""
     scxml = request.form['scxml']
     schema = etree.parse("fsm_schema.xsd")
-    xmlschema = etree.XMLSchema(schema)    
-    
+    xmlschema = etree.XMLSchema(schema)
+
     try:
         document = etree.fromstring(scxml)
         print("Parse complete!")
@@ -112,12 +114,11 @@ def evaluate_fsm():
     words = request.form['words']
     transitionscripts = ""
     wordsDict = dict()
-    print("Calculating words!")
     for word in words.splitlines():
-        wordsDict[word] = fsm.calculate(word,['resetgraph','displayedGraph','navbar'])
+        print("calculating word")
+        wordsDict[word] = fsm.calculate(word)
+        print("getting transcripts")
         transitionscripts += viewTransitionOnClickJs(word, edges, wordsDict[word])
-    print("Adding reset button!")
-    transitionscripts += viewTransitionOnClickJs("resetgraph",edges,(True,[]))
     print('Rendering template')
     return render_template('form_action.html', scxml = scxml, words = wordsDict, graphvis = out, transitionscripts = transitionscripts )
 
