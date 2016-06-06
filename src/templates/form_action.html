@@ -29,6 +29,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('editor') }}">Editor</a></li>
                     <li><a href="{{ url_for('contact') }}">Contact</a></li>
                     <li><a href="{{ url_for('help') }}">Help</a></li>
                 </ul>
@@ -62,7 +63,7 @@
                             <td>{% for letter in word %}{% if letter == " " %}<span style="color:green">ε</span>{% else %}{{letter}}{% endif %}{% endfor %}</td>
                             {% if not words[word][0] %}<td><span style="color:red" class="glyphicon glyphicon-remove"></span> {{words[word][1]}}</td>
                                 <td/>
-                            {% else %}<td><span style="color:green" class="glyphicon glyphicon-ok"></span></td><td><a class="button btn-primary btn-xs" href="#displayedGraph" id="{%print(word)%}">View transition</a></td>{% endif %}
+                            {% else %}<td><span style="color:green" class="glyphicon glyphicon-ok"></span></td><td><a class=" btn-primary btn-xs" href="#displayedGraph" id="{%print(word)%}">View transition</a></td>{% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>

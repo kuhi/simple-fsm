@@ -56,12 +56,18 @@ def contact():
       return render_template('contact.html', success=True)
 
   elif request.method == 'GET':
-    print("b")
     return render_template('contact.html', form=form)
 
 @app.route('/help')
 def help():
     return render_template('help.html')
+
+@app.route('/editor')
+def editor():
+    fsm = FSM()
+    edges = getEdgeIds(fsm)
+    out = fsmIntoJavaScript(fsm, edges)
+    return render_template('editor.html', graphvis = out)
 
 @app.errorhandler(403)
 def page_forbidden(e):
