@@ -49,25 +49,31 @@ def getEdgeIds(fsm):
                 
     
 def fsmIntoJavaScript(fsm, edges):
-    #first, define the nodes
-    output = "\tvar nodes = new vis.DataSet([\n" 
-    for (id,label,type) in fsm.states:
-        highlight = ""
-        if type == "f":
-            highlight = ",color:{background:'#33cc33'}"
-        elif type == "i":
-            highlight = ",shape:'diamond'"
-        elif type == "if":
-            highlight = ",shape:'diamond',color:{background:'#33cc33'}"
-        output += "\t\t{id:"+str(id)+",label:'"+label+"'"+highlight+"},\n"
-    output = output[:-2] + "\n" #to remove the trailing comma   
-    output += "\t]);\n"
+    #first, define the 
+    if len(fsm.states) == 0:
+        output = "\tvar nodes = new vis.DataSet()\n"
+    else:     
+        output = "\tvar nodes = new vis.DataSet([\n" 
+        for (id,label,type) in fsm.states:
+            highlight = ""
+            if type == "f":
+                highlight = ",color:{background:'#33cc33'}"
+            elif type == "i":
+                highlight = ",shape:'diamond'"
+            elif type == "if":
+                highlight = ",shape:'diamond',color:{background:'#33cc33'}"
+            output += "\t\t{id:"+str(id)+",label:'"+label+"'"+highlight+"},\n"
+        output = output[:-2] + "\n" #to remove the trailing comma   
+        output += "\t]);\n"
     #then transitions
-    output += "\tvar edges = new vis.DataSet([\n"
-    for (edgeId,stateId,finalNode,letters) in edges:
-        output += "\t\t{id:"+edgeId+",from:" + stateId + ",to:"  + finalNode + ",arrows:'to',label:'" + letters +"'},\n"
-    output = output[:-2] + "\n" 
-    output += "\t]);\n"    
+    if len(edges) == 0:
+        output += "\tvar edges = new vis.DataSet()\n"
+    else: 
+        output += "\tvar edges = new vis.DataSet([\n"
+        for (edgeId,stateId,finalNode,letters) in edges:
+            output += "\t\t{id:"+edgeId+",from:" + stateId + ",to:"  + finalNode + ",arrows:'to',label:'" + letters +"'},\n"
+        output = output[:-2] + "\n" 
+        output += "\t]);\n"    
     output += """
 \tvar container = document.getElementById('displayedGraph');
 \tvar data = {
