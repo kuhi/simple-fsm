@@ -51,7 +51,7 @@ def getEdgeIds(fsm):
 def fsmIntoJavaScript(fsm, edges):
     #first, define the 
     if len(fsm.states) == 0:
-        output = "\tvar nodes = new vis.DataSet()\n"
+        output = "\tvar nodes = new vis.DataSet();\n"
     else:     
         output = "\tvar nodes = new vis.DataSet([\n" 
         for (id,label,type) in fsm.states:
@@ -67,7 +67,7 @@ def fsmIntoJavaScript(fsm, edges):
         output += "\t]);\n"
     #then transitions
     if len(edges) == 0:
-        output += "\tvar edges = new vis.DataSet()\n"
+        output += "\tvar edges = new vis.DataSet();\n"
     else: 
         output += "\tvar edges = new vis.DataSet([\n"
         for (edgeId,stateId,finalNode,letters) in edges:
