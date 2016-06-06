@@ -18,7 +18,7 @@ app.secret_key = 'mega secret open source development key 008'
 with open('conf.txt', 'r') as f:
     data = f.readlines()
 
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_SERVER"] = data[2].strip()
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = data[0].strip()
