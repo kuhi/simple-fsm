@@ -88,6 +88,9 @@ def fsmIntoJavaScript(fsm, edges):
 #edges: (edge id, starting state id, end state id, letters as a string e.g. 1,2,3,4)
 def viewTransitionOnClickJs(word, edges, path):
     if path[0]:
+        print(edges)
+        print(word)
+        print(path)
         output = "\t$( \"#"+word+"\").click(function() {\n"
         for (eid,sid,fid,let) in edges:
             if (sid,fid) in path[1] and word != "resetgraph":

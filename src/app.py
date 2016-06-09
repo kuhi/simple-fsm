@@ -40,7 +40,7 @@ def contact():
       flash('All fields are required.')
       return render_template('contact.html', form=form)
     else:
-      msg = Message(form.subject.data, sender="simple.fsm@gmail.com", recipients=["marek.vancik@gmail.com"])
+      msg = Message(form.subject.data, sender="simple.fsm@gmail.com", recipients=["simple.fsm@gmail.com"])
       try:
        #msg.body = ' '
         msg.body = """
@@ -114,18 +114,19 @@ def evaluate_fsm():
         
     fsm = parseFsmFromStringXml(scxml)
     edges = getEdgeIds(fsm)
-    out = fsmIntoJavaScript(fsm,edges)
+    out = fsmIntoJavaScript(fsm, edges)
     
     words = request.form['words']
     transitionscripts = ""
     wordsDict = dict()
     for word in words.splitlines():
         print("calculating word")
-        wordsDict[word] = fsm.calculate(word)
+        wordsDict[word] = fsm.calculate(word, ['resetgraph','displayedGraph','navbar'])
         print("getting transcripts")
         transitionscripts += viewTransitionOnClickJs(word, edges, wordsDict[word])
+    resetgraph = viewTransitionOnClickJs('resetgraph', edges, (True, []))
     print('Rendering template')
-    return render_template('form_action.html', scxml = scxml, words = wordsDict, graphvis = out, transitionscripts = transitionscripts )
+    return render_template('form_action.html', scxml=scxml, words=wordsDict, graphvis=out, transitionscripts=transitionscripts, resetgraph=resetgraph )
 
 # Run the app :)
 if __name__ == '__main__':
