@@ -37,17 +37,16 @@
         
         <div class="container">
             <div class="jumbotron">
-            <h2>Simple-fsm help page</h2>
-            <h3>This help page is up to date for the current version (v0.1.0 ALPHA) only. To see the newest documentation for the newest version, see our <a href="https://github.com/kuhi/simple-fsm/wiki">github wiki</a>.</h3><br/>
-            <p>As the name suggests, working with this application is very simple. The xml document describing the finite state automata is very simple as well.</p>
+            <h2>Simple-fsm help page</h2><br>
+            <h3>This help page is up to date for the current version (v0.1.0 ALPHA) only. To see the documentation for the newest version, see our <a href="https://github.com/kuhi/simple-fsm/wiki">github wiki</a>.</h3><br/>
+            <p>As the name suggests, working with this application is very simple. The xml document describing the finite state automaton is very simple as well.</p>
             <p>Here's the simplest thing you can describe using fsm-xml (trademark pending).</p>
             <pre>
 &lt;fsm&gt;
     &lt;state id=&quot;0&quot; type=&quot;f&quot; label=&quot;initial&quot;&gt;  
         &lt;transition under=&quot;a&quot;&gt;0&lt;/transition&gt;  
     &lt;/state&gt;  
-&lt;/fsm&gt;
-            </pre>
+&lt;/fsm&gt;</pre>
             <p>Let's go through it step-by-step.</p>
             <ol>
                 <li>The <code>&lt;fsm&gt;</code> element is the root element of the fsm-xml, it declares that the contents of the xml are describing a Finite State Machine (or Automaton). This attribute is mandatory</li></br>
@@ -59,7 +58,7 @@
                     </ul></li></br>
                 <li>The <code>transition</code> element <b>can</b> be nested inside a state attribute. It describes the letter <b>under</b> which does the word pass and to which <code>state</code> the destination is the <code>id</code> of an already existing state (or itself). On a graph this is represented with an edge.</li></br>
             </ol>    
-            <h3>That's all folks! Have fun arraging the most intricate finite state machines! Theoretical Coputer Science can be fun when you're using Simple-fsm™</h3>
+            <h3>That's all folks! Have fun arranging the most intricate finite state machines! Theoretical Computer Science can be fun when you're using Simple-fsm™!</h3>
             </div>
         </div>
         
