@@ -37,7 +37,7 @@
                     <li><a href="http://glyphicons.com/">Glyphicons</a></li>
                     <li><a href="http://github.com/kuhi/simple-fsm">GitHub</a></li>
                 </ul>
-                </div><!--/.nav-collapse -->
+                </div>
             </div>
         </nav>
         
@@ -63,7 +63,7 @@
                             <td>{% for letter in word %}{% if letter == " " %}<span style="color:green">ε</span>{% else %}{{letter}}{% endif %}{% endfor %}</td>
                             {% if not words[word][0] %}<td><span style="color:red" class="glyphicon glyphicon-remove"></span> {{words[word][1]}}</td>
                                 <td/>
-                            {% else %}<td><span style="color:green" class="glyphicon glyphicon-ok"></span></td><td><a class=" btn-primary btn-xs" href="#displayedGraph" id="{%print(word)%}">View transition</a></td>{% endif %}
+                            {% else %}<td><span style="color:green" class="glyphicon glyphicon-ok"></span></td><td><button class=" btn-success btn-xs" id="{%print(word)%}">View transition</button></td>{% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -71,7 +71,7 @@
                 </div>
                 <br>
                 <div id="displayedGraph"></div>
-                <button id="resetgraph" class="btton btn-primary" href="#scxml">Reset</button>
+                <button id="resetgraph" class="btton btn-success" >Reset</button>
             </div>
         </div>
         

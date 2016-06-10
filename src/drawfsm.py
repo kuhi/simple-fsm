@@ -30,7 +30,6 @@ def serializeLetters(input):
     return output[:-1]
     
 def getEdgeIds(fsm):
-    print("getting edge ids")
     edgeId = 0
     edges = []
     for (id,label,_) in fsm.states:
@@ -44,7 +43,6 @@ def getEdgeIds(fsm):
         for finalNode in toTrans.keys():
             edges.append((str(edgeId),str(id),finalNode,serializeLetters(toTrans[finalNode])))
             edgeId += 1
-    print(edges)
     return edges
                 
     
@@ -82,15 +80,11 @@ def fsmIntoJavaScript(fsm, edges):
 \t};
 \tvar options = {};
 \tvar network = new vis.Network(container, data, options);"""
-    print(output)
     return output
     
 #edges: (edge id, starting state id, end state id, letters as a string e.g. 1,2,3,4)
 def viewTransitionOnClickJs(word, edges, path):
     if path[0]:
-        print(edges)
-        print(word)
-        print(path)
         output = "\t$( \"#"+word+"\").click(function() {\n"
         for (eid,sid,fid,let) in edges:
             if (sid,fid) in path[1] and word != "resetgraph":
@@ -98,7 +92,6 @@ def viewTransitionOnClickJs(word, edges, path):
             else:
                 output += "\t\tedges.update({id:"+eid+",from:"+sid+",to:"+fid+",arrows:'to',label:'"+let+"',color:'#2B7CE9'});\n"
         output += "\t});\n"
-        print(output)
         return output
     else:
         return ""

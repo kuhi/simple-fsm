@@ -35,14 +35,12 @@ class FSM:
         
     def transition(self, stateId, letter):
         newstate = "-1"
-        print("Transitioning from " + str(stateId) + " under " + str(letter))
         if stateId in self.transitions.keys():
             destinations = self.transitions[stateId]
             for (under, to) in destinations:
                 if under == letter:
                     newstate = to
                     break
-            print("Transitioned to " + newstate)
             return newstate
         else:
             return "-1"
@@ -58,10 +56,8 @@ class FSM:
                 trans.add((state,newstate))
                 state = newstate
             if str(newstate) in self.final:
-                print("OK")
                 return (True, trans)
             else:
-                print("NOK")
                 return (False, "Word didn't reach a final state.")
         else:
             return (False, "Invalid letter found.")

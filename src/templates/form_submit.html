@@ -41,15 +41,15 @@
                     <div class="dropdown">
                         <button class="btn btn-xs btn-success dropdown-toggle" type="button" data-toggle="dropdown">Samples<span class="caret"></span></button>
                         <ul class="dropdown-menu">
-                            <li><a href="#scxml" id="aba-substring">"aba" substring</a></li>
-                            <li><a href="#scxml" id="second">{a,b}*.{c}.{aa,b}*.{d}+</a></li>
-                            <li><a href="#scxml" id="third">{a,b}*.({cd}+.{d}.{a,b}*{c}).{a,b}+</a></li>
-                            <li><a href="#scxml" id="fourth">Random</a></li>
+                            <li><a id="aba-substring">"aba" substring</a></li>
+                            <li><a id="second">{a,b}*.{c}.{aa,b}*.{d}+</a></li>
+                            <li><a id="third">{a,b}*.({cd}+.{d}.{a,b}*{c}).{a,b}+</a></li>
                         </ul>
                     </div><br>
-                    <textarea wrap="hard" style="font-family:monospace" class="form-control" style="resize:vertical;" rows="15" name="scxml" id="scxml" form="scxmlform">Enter the xml in FSM-XML format here. An explanation on how to represent a Finite State machine using the FSM-XML format is on this site's Help section.</textarea>
+                    <textarea wrap="hard" style="font-family:monospace;overflow-y:scroll;" class="form-control" style="resize:vertical;" rows="15" name="scxml" id="scxml" form="scxmlform">Enter the xml in FSM-XML format here. An explanation on how to represent a Finite State machine using the FSM-XML format is on this site's Help section.</textarea>
                     <br/>
-                    <h3>Words to evaluate:</h3>
+                    <h3>Words to evaluate: </h3>
+                    <small class="text-muted" >Only the first <b>{{maxwords}}</b> words will be evaluated!</small>        
                     <textarea wrap="soft" style="font-family:monospace;resize:vertical" class="form-control" style="resize:vertical;" rows="15" name="words" id="words" form="scxmlform">Enter words for your automaton to evaluate. Enter one word per line.</textarea>
                     <br/>
                     <input class="btn btn-lg btn-success" type="submit" value="Compute" />    
@@ -95,6 +95,7 @@
         &lt;transition under=&quot;d&quot;&gt;4&lt;/transition&gt;
     &lt;/state&gt;
 &lt;/fsm&gt;`);
+            $("#scxml").css("height","574");
             });
             $("#second").click(function() {
                 $('#scxml').html(`&lt;!-- {a,b}*.{c}.{aa,b}*.{d}+ --&gt;
@@ -116,6 +117,7 @@
         &lt;transition under=&quot;d&quot;&gt;4&lt;/transition&gt;
     &lt;/state&gt;
 &lt;/fsm&gt;`);
+            $("#scxml").css("height","400");
             });
             $("#third").click(function() {
                 $('#scxml').html(`&lt;!-- {a,b}*.({cd}+.{d}.{a,b}*{c}).{a,b}+ --&gt;
@@ -146,6 +148,7 @@
         &lt;transition under=&quot;b&quot;&gt;6&lt;/transition&gt;
     &lt;/state&gt;
 &lt;/fsm&gt;`);
+            $("#scxml").css("height","574");
             });
         </script>
     </body>
