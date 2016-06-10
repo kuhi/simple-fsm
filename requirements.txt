@@ -1,2 +1,5 @@
 Flask==0.10.1
 Lxml==3.4.4
+simplejson==3.8.2
+flask-WTF==0.12
+flask-Mail==0.9.1
