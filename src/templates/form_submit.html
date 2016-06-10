@@ -46,11 +46,11 @@
                             <li><a id="third">{a,b}*.({cd}+.{d}.{a,b}*{c}).{a,b}+</a></li>
                         </ul>
                     </div><br>
-                    <textarea wrap="hard" style="font-family:monospace;overflow-y:scroll;" class="form-control" style="resize:vertical;" rows="15" name="scxml" id="scxml" form="scxmlform">Enter the xml in FSM-XML format here. An explanation on how to represent a Finite State machine using the FSM-XML format is on this site's Help section.</textarea>
+                    <textarea wrap="hard" style="font-family:monospace;overflow-y:scroll;" class="form-control" style="resize:vertical;" rows="15" name="scxml" id="scxml" form="scxmlform" placeholder="Enter the xml in FSM-XML format here. An explanation on how to represent a Finite State machine using the FSM-XML format is on this site's Help section."></textarea>
                     <br/>
                     <h3>Words to evaluate: </h3>
-                    <small class="text-muted" >Only the first <b>{{maxwords}}</b> words will be evaluated!</small>        
-                    <textarea wrap="soft" style="font-family:monospace;resize:vertical" class="form-control" style="resize:vertical;" rows="15" name="words" id="words" form="scxmlform">Enter words for your automaton to evaluate. Enter one word per line.</textarea>
+                    <small class="text-muted" >Only the first <b>{{maxwords}}</b> words will be evaluated!</small>      
+                    <textarea wrap="soft" style="font-family:monospace;resize:vertical" class="form-control" style="resize:vertical;" rows="15" name="words" id="words" form="scxmlform" placeholder="Enter words for your automaton to evaluate. Enter one word per line."></textarea>
                     <br/>
                     <input class="btn btn-lg btn-success" type="submit" value="Compute" />    
                 </form>

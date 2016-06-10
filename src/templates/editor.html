@@ -43,13 +43,18 @@
         
     
         <div class="container">
-            <div class="jumbotron">
+            <div class="jumbotron"> 
                 <br>
-                <pre style="white-space:pre-wrap">{{scxml}}</pre> 
-                <br>
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addNode">Add node</button>
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addEdge">Add Edge</button>
-
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <button type="button" class="btn btn-success " data-toggle="modal" data-target="#addNode"><span class="glyphicon glyphicon-plus"></span> Add node</button>
+                        <button type="button" class="btn btn-success " data-toggle="modal" data-target="#addEdge"><span class="glyphicon glyphicon-plus"></span> Add Edge</button>
+                        <button type="button" class="btn btn-warning " onclick="removeSelected()"><small><span class="glyphicon glyphicon-remove"></span></small> Remove selected</button>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                    <button type="button" class="btn btn-danger " onclick="removeGraph()"><small><span class="glyphicon glyphicon-remove"></span></small> Scrap it all!</button>
+                    </ul>
+                </div>
                 <!-- Modal -->
                 <div id="addNode" class="modal fade" role="dialog">
                   <div class="modal-dialog">
@@ -62,10 +67,6 @@
                       <div class="modal-body">
                           <form role="form">
                             <div class="form-group">
-                              <label for="inputsm">Node id</label>
-                              <input class="form-control input-sm" id="id" type="text">
-                            </div>
-                            <div class="form-group">
                               <label for="inputsm">Node label</label>
                               <input class="form-control input-sm" id="label" type="text">
                             </div>
@@ -74,7 +75,7 @@
                                 <option>Initial</option>
                                 <option>Final</option>
                                 <option>Initial and Final</option>
-                                <option>Normal</option>
+                                <option>Regular</option>
                                 </select>
                           </form>
                       </div>
@@ -85,35 +86,7 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="addNode()">Add</button>
                       </div>
                       <script>
-                        function addNode() {
-                            var highlight = "";
-                            var type = document.getElementById("type").value;
-                            var nodeColor = "";
-                            var nodeShape = "";
-                            var nodeId = document.getElementById("id").value;
-                            var nodeLabel = label: document.getElementById("label").value;
-                            if (type === "Final"){
-                                nodeColor = "background:'#33cc33'";
-                            } else if (type === "Initial"){
-                                nodeShape = "diamond";
-                            } else if (type === Initial and Final){
-                                nodeShape = diamond
-                                nodeColor = "background:'#33cc33'";
-                            }
-
-                            if(nodeColor !== "" && nodeShape !== ""){
-                                nodes.add({id: nodeId, label: nodeLabel, color: nodeColor, shape: nodeShape});  
-                            } else if (nodeColor !== ""){
-                                nodes.add({id: nodeId, label: nodeLabel, color: nodeColor);  
-                            } else if (nodeShape !== ""){
-                                nodes.add({id: nodeId, label: nodeLabel, shape: nodeShape);  
-                            }  else {
-                                nodes.add({id: nodeId, label: nodeLabel);  
-                            }  
-                       //   nodes.add([
-                       //   {id: 2, label: 'item 2',shape:'diamond', color:{background:'#33cc33'}},
-                      //  ]);
-                      //  }
+                        
                         </script>
                     </div>
                   </div>
@@ -153,19 +126,112 @@
                     </div>
                   </div>
                 </div>    
-                <br>
+                <br/><br/>
+                <div class="bg-danger text-danger" id="errorFeed"></div>
+                <br/>
                 <div id="displayedGraph"></div>
-                <a id="resetgraph" class="btton btn-primary" href="#scxml">Reset</a>
             </div>
         </div>
         
         <script src="{{url_for('static',filename='jquery-1.12.3.min.js')}}"></script>
-        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="{{url_for('static',filename='jquery-1.12.3.min.js')}}"><\/script>')</script>
         <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
         <script src="{{ url_for('static',filename='vis.min.js') }}"></script>
         <script>
-{{graphvis|safe}}
-{{transitionscripts|safe}}
-{{resetgraph|safe}}
+        var hasInitial = 1;
+        var nodeId = 0;
+        
+        //Generate the initial graph
+        var nodes = new vis.DataSet([
+            {id:0, label:'0', shape:'diamond', color:{background:'#33cc33'}}
+        ]);
+        var edges = new vis.DataSet([
+            {id:0, from:0, to:0, arrows:'to', label:'a'}
+        ]);
+        var container = document.getElementById('displayedGraph');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {};
+        var network = new vis.Network(container, data, options);
+        
+        //Adds a node - there are several cases that need to be taken care of
+        function addNode() {
+            //Wipe the error feed
+            document.getElementById('errorFeed').innerHTML = "";
+            
+            var highlight = "";
+            var nodeColor = "";
+            var nodeShape = "";
+            var type = document.getElementById("type").value;
+            var nodeLabel = document.getElementById("label").value;            
+            
+            //Error checking - print the output
+            if (type === "Final"){
+                nodeColor = "background:'#33cc33'";
+            } else if (type === "Initial and Final"){
+                if (hasInitial === 1) {
+                    document.getElementById('errorFeed').innerHTML = "The graph already has an initial state! Either remove it or change its type!"
+                    return;
+                } else {
+                    hasInitial = 1;
+                }
+                nodeShape = "diamond";
+                nodeColor = "background:'#33cc33'";
+            } else if (type === "Initial"){
+                if (hasInitial === 1) {
+                    document.getElementById('errorFeed').innerHTML = "The graph already has an initial state! Either remove it or change its type!"
+                    return;
+                } else {
+                    hasInitial = 1;
+                }
+                nodeShape = "diamond";
+            }
+            
+            if(nodeColor !== "" && nodeShape !== ""){
+                nodes.add({id: nodeId, label: nodeLabel, color: nodeColor, shape: nodeShape}); 
+                ++nodeId;
+            } else if (nodeColor !== ""){
+                nodes.add({id: nodeId, label: nodeLabel, color: nodeColor});  
+                ++nodeId;
+            } else if (nodeShape !== ""){
+                nodes.add({id: nodeId, label: nodeLabel, shape: nodeShape});  
+                ++nodeId;
+            }  else {
+                nodes.add({id: nodeId, label: nodeLabel});  
+                ++nodeId;
+            }  
+        }
+        
+        //Adds an edge
+        function addEdge() {
+            document.getElementById('errorFeed').innerHTML = "";
+        }
+        
+        //Removes the selected graph element
+        function removeSelected() {
+            if (network.getSelectedNodes().length === 0 && network.getSelectedEdges().length === 0) {
+                document.getElementById('errorFeed').innerHTML = "No edges/nodes selected!"
+                return;
+            }
+            for (node in network.getSelectedNodes()) {
+                if (nodes.get(node).shape === "diamond") {
+                    hasInitial = 0;
+                }
+            }
+            network.deleteSelected();
+        }
+        
+        function removeGraph() {
+            if (nodes.length === 0 && edges.length === 0) {
+                document.getElementById('errorFeed').innerHTML = "Nothing to remove!"
+                return;
+            }
+            nodes.remove(nodes.getIds());
+            edges.remove(edges.getIds());
+            hasInitial = 0;
+        }
+        
         </script>
     </body>
