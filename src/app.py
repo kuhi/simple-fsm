@@ -24,12 +24,15 @@ app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = data[0].strip()
 app.config["MAIL_PASSWORD"] = data[1].strip()
 
+#max word permitted
+app.config["MAX_WORDS"] = 15
+
 mail.init_app(app)
 
 # Define a route for the default URL, which loads the form
 @app.route('/')
 def form():
-    return render_template('form_submit.html')
+    return render_template('form_submit.html', maxwords=app.config["MAX_WORDS"])
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -64,10 +67,7 @@ def help():
 
 @app.route('/editor')
 def editor():
-    fsm = FSM()
-    edges = getEdgeIds(fsm)
-    out = fsmIntoJavaScript(fsm, edges)
-    return render_template('editor.html', graphvis = out)
+    return render_template('editor.html')
 
 @app.errorhandler(403)
 def page_forbidden(e):
@@ -119,14 +119,15 @@ def evaluate_fsm():
     words = request.form['words']
     transitionscripts = ""
     wordsDict = dict()
+    wordCount = 0
     for word in words.splitlines():
-        print("calculating word")
+        if wordCount == app.config["MAX_WORDS"]:
+            break
         wordsDict[word] = fsm.calculate(word, ['resetgraph','displayedGraph','navbar'])
-        print("getting transcripts")
         transitionscripts += viewTransitionOnClickJs(word, edges, wordsDict[word])
+        wordCount += 1
     resetgraph = viewTransitionOnClickJs('resetgraph', edges, (True, []))
-    print('Rendering template')
-    return render_template('form_action.html', scxml=scxml, words=wordsDict, graphvis=out, transitionscripts=transitionscripts, resetgraph=resetgraph )
+    return render_template('form_action.html', scxml=scxml, words=wordsDict, graphvis=out, transitionscripts=transitionscripts, resetgraph=resetgraph)
 
 # Run the app :)
 if __name__ == '__main__':
