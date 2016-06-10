@@ -2,7 +2,30 @@
     <xsd:element name="fsm">
         <xsd:complexType>
             <xsd:sequence>
-                <xsd:element name="state" type = "type_state" minOccurs="1" maxOccurs="unbounded"/>
+                <xsd:element name="state" minOccurs="1" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="transition" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:simpleContent>
+                                        <xsd:extension base="xsd:nonNegativeInteger">
+                                            <xsd:attribute name="under" type="xsd:string"/>
+                                        </xsd:extension>
+                                    </xsd:simpleContent>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                        <xsd:attribute name="type" type="type_category" use="required"/>
+                        <xsd:attribute name="label" type="type_nonEmptyString" use="required"/>
+                        <xsd:attribute name="id" type="xsd:nonNegativeInteger" use="required"/>
+                    </xsd:complexType>
+               
+                    <xsd:unique name="TransitionPrimaryKey">
+                        <xsd:selector xpath="transition"/>
+                        <xsd:field xpath="@under"/>
+                    </xsd:unique>
+               
+                </xsd:element>
             </xsd:sequence>
         </xsd:complexType>
         
