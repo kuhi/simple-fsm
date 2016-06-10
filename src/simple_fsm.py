@@ -30,6 +30,7 @@ class FSM:
         self.transitions[str(id)] = []
         
     def addTransition(self, stateId, under, to):
+        print('adding' + self + stateId + to)
         self.alphabet.add(under)
         self.transitions[stateId].append((under,to))
         
@@ -62,6 +63,14 @@ class FSM:
         else:
             return (False, "Invalid letter found.")
             
-        
+    def getFsmXml(self):
+        xml = "<fsm>\n"
+        for state in self.states:
+            xml += "    <state id=\"" + state[0] + "\" label=\"" + state[1] + "\" type=\"" + state[2] + "\">\n"
+            for transition in self.transitions[state[0]]:
+                xml += "        <transition under=\"" + transition[0] + "\">" + transition[1] + "</transition>\n"
+            xml += "    </state>\n"        
+        xml += "</fsm>"
+        return xml
     
     
