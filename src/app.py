@@ -1,7 +1,7 @@
 # We need to import request to access the details of the POST request
 # and render_template, to render our templates (form and response)
 # we'll use url_for to get some URLs for the app on the templates
-from flask import Flask, render_template, request, url_for, flash
+from flask import Flask, render_template, request, url_for, flash, make_response
 from drawfsm import *
 from lxml import etree
 from forms import ContactForm
@@ -29,7 +29,26 @@ app.config["MAX_WORDS"] = 15
 
 mail.init_app(app)
 
-# Define a route for the default URL, which loads the form
+# This route will prompt a file download with the csv lines
+@app.route('/export', methods=['POST'])
+def export():
+
+    scxml = request.form['scxml']
+    document = etree.fromstring(scxml)
+    dom = etree.parse(document)
+    xslt = etree.parse("fsm_to_scxml.xsl")
+    transform = etree.XSLT(xslt)
+    newdom = transform(dom)
+    print(etree.tostring(newdom, pretty_print=True))
+
+    # We need to modify the response, so the first thing we 
+    # need to do is create a response out of the CSV string
+    response = make_response(dom)
+    # This is the key: Set the right header for the response
+    # to be downloaded, instead of just printed on the browser
+    response.headers["Content-Disposition"] = "attachment; filename=export.xml"
+    return response
+
 @app.route('/')
 def form():
     return render_template('form_submit.html', maxwords=app.config["MAX_WORDS"])
