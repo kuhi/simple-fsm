@@ -38,7 +38,7 @@ def export():
     dom = etree.parse(document)
     xslt = etree.parse("fsm_to_scxml.xsl")
     transform = etree.XSLT(xslt)
-    newdom = transform(dom)
+    newdom = transform(newdom)
     print(etree.tostring(newdom, pretty_print=True))
 
     # We need to modify the response, so the first thing we 
