@@ -43,7 +43,8 @@
                         <ul class="dropdown-menu">
                             <li><a href="#scxml" id="aba-substring">"aba" substring</a></li>
                             <li><a href="#scxml" id="second">{a,b}*.{c}.{aa,b}*.{d}+</a></li>
-                            <li><a href="#scxml" id="third">Random</a></li>
+                            <li><a href="#scxml" id="third">{a,b}*.({cd}+.{d}.{a,b}*{c}).{a,b}+</a></li>
+                            <li><a href="#scxml" id="fourth">Random</a></li>
                         </ul>
                     </div><br>
                     <textarea wrap="hard" style="font-family:monospace" class="form-control" style="resize:vertical;" rows="15" name="scxml" id="scxml" form="scxmlform">Enter the xml in FSM-XML format here. An explanation on how to represent a Finite State machine using the FSM-XML format is on this site's Help section.</textarea>
@@ -116,7 +117,36 @@
     &lt;/state&gt;
 &lt;/fsm&gt;`);
             });
-            
+            $("#third").click(function() {
+                $('#scxml').html(`&lt;!-- {a,b}*.({cd}+.{d}.{a,b}*{c}).{a,b}+ --&gt;
+&lt;fsm&gt;
+    &lt;state id=&quot;1&quot; label=&quot;init&quot; type=&quot;r&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;b&quot;&gt;1&lt;/transition&gt;
+        &lt;transition under=&quot;c&quot;&gt;2&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;2&quot; label=&quot;2&quot; type=&quot;r&quot;&gt;
+        &lt;transition under=&quot;d&quot;&gt;3&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;3&quot; label=&quot;3&quot; type=&quot;r&quot;&gt;
+        &lt;transition under=&quot;c&quot;&gt;2&lt;/transition&gt;
+        &lt;transition under=&quot;d&quot;&gt;4&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;4&quot; label=&quot;4&quot; type=&quot;f&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;4&lt;/transition&gt;
+        &lt;transition under=&quot;b&quot;&gt;4&lt;/transition&gt;
+        &lt;transition under=&quot;c&quot;&gt;5&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;5&quot; label=&quot;5&quot; type=&quot;f&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;6&lt;/transition&gt;
+        &lt;transition under=&quot;b&quot;&gt;6&lt;/transition&gt;
+    &lt;/state&gt;
+    &lt;state id=&quot;6&quot; label=&quot;final&quot; type=&quot;f&quot;&gt;
+        &lt;transition under=&quot;a&quot;&gt;6&lt;/transition&gt;
+        &lt;transition under=&quot;b&quot;&gt;6&lt;/transition&gt;
+    &lt;/state&gt;
+&lt;/fsm&gt;`);
+            });
         </script>
     </body>
 </html>
