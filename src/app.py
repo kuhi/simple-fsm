@@ -1,12 +1,16 @@
 # We need to import request to access the details of the POST request
 # and render_template, to render our templates (form and response)
 # we'll use url_for to get some URLs for the app on the templates
-from flask import Flask, render_template, request, url_for, flash, make_response
+from flask import Flask, render_template, request, url_for, flash, make_response, jsonify
 from drawfsm import *
 from lxml import etree
 from forms import ContactForm
 from flask.ext.mail import Message, Mail
+#python 3 requires import from parse
+from urllib.parse import unquote
+import simplejson as json
 import traceback
+from xml.sax.saxutils import escape
 
 # Initialize the Flask application
 mail = Mail()
@@ -80,6 +84,43 @@ def contact():
   elif request.method == 'GET':
     return render_template('contact.html', form=form)
 
+
+@app.route('/export_fsmxml')
+def export_fsmxml():
+    nodes = request.args['nodes']
+    edges = request.args['edges']
+    #Create a copy
+    nodes = json.loads((nodes+'.')[:-1])
+    edges = json.loads((edges+'.')[:-1])
+    fsm = FSM()
+    for stateId in nodes.keys():
+        try:
+            isFinal = nodes[stateId]['color']['background'] == '#33cc33'
+        except:
+            isFinal = False
+        try:
+            isInitial = nodes[stateId]['shape'] == 'diamond'
+        except:
+            isInitial = False
+        if isFinal and not isInitial:
+            type = 'f'
+        elif isInitial and not isFinal:
+            type = 'i'
+        elif isFinal and isInitial:
+            type = 'if'
+        else:
+            type = 'r'
+        fsm.addState(stateId,nodes[stateId]['label'],type)
+    for trans in edges:
+        try:
+            fsm.transitions[str(edges[trans]['from'])].append((edges[trans]['label'],str(edges[trans]['to'])))
+        except:
+            fsm.transitions[str(edges[trans]['from'])] = []
+            fsm.transitions[str(edges[trans]['from'])].append((edges[trans]['label'],str(edges[trans]['to'])))
+    print(fsm)
+    print(fsm.getFsmXml())
+    return jsonify(outputArea=escape(fsm.getFsmXml()))
+    
 @app.route('/help')
 def help():
     return render_template('help.html')

@@ -126,14 +126,21 @@
                 <div class="bg-danger text-danger" id="errorFeed"></div>
                 <br/>
                 <div id="displayedGraph"></div>
+                <div id="outputArea"></div>
+                <br/>
+                
+                <input class="btn btn-s btn-success" id="exFsmXml" type="submit" value="Export as fsm-xml (native)" />
+                <input class="btn btn-s btn-success" type="exScXml" value="Export as scxml" />
+                <br/>
             </div>
         </div>
         
-        <script src="{{url_for('static',filename='jquery-1.12.3.min.js')}}"></script>
-        <script>window.jQuery || document.write('<script src="{{url_for('static',filename='jquery-1.12.3.min.js')}}"><\/script>')</script>
+        <script src="{{ url_for('static', filename='jquery-1.12.3.min.js')}}"></script>
         <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
         <script src="{{ url_for('static',filename='vis.min.js') }}"></script>
         <script>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        
         var hasInitial = 1;
         var nodeId = 1;
         var edgeId = 1;
@@ -280,6 +287,18 @@
             hasInitial = 0;
             updateNodeList();
         }
+                
+        $(function() {
+            $('#exFsmXml').bind('click', function() {
+                $.getJSON($SCRIPT_ROOT + '/export_fsmxml', {
+                        edges: JSON.stringify(edges._data),
+                        nodes: JSON.stringify(nodes._data)
+                    }, function(data) {
+                       document.getElementById('outputArea').innerHTML = "<pre>" + data.outputArea + "</pre>";
+                });
+            return false;
+            });
+        });
         
         </script>
     </body>
