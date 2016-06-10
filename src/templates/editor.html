@@ -67,21 +67,20 @@
                       <div class="modal-body">
                           <form role="form">
                             <div class="form-group">
-                              <label for="inputsm">Node label</label>
+                              <label for="inputsm">Node label</label><br/>
+                              <small>It's not a requirement, but we highly recommend naming the nodes uniquely!</small>
                               <input class="form-control input-sm" id="label" type="text">
                             </div>
                             <label for="sel1">Select type</label>
                                 <select class="form-control" id="type">
-                                <option>Initial</option>
-                                <option>Final</option>
-                                <option>Initial and Final</option>
-                                <option>Regular</option>
+                                    <option>Initial</option>
+                                    <option>Final</option>
+                                    <option>Initial and Final</option>
+                                    <option>Regular</option>
                                 </select>
                           </form>
                       </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      </div>
+                      
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" onclick="addNode()">Add</button>
                       </div>
@@ -99,7 +98,6 @@
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Najprv musi fungovat ten add node :D</h4>
                       </div>
                       <div class="modal-body">
                           <form role="form">
@@ -109,24 +107,22 @@
                             </div>
                             <div class="form-group">
                               <label for="inputsm">From</label>
-                              <input class="form-control input-sm" id="label" type="text">
+                              <input class="form-control input-sm" id="from" type="text">
                             </div>
                             <div class="form-group">
                               <label for="inputsm">To</label>
-                              <input class="form-control input-sm" id="type" type="text">
+                              <input class="form-control input-sm" id="to" type="text">
                             </div>
                           </form>
                       </div>
+                      <div class="modal-body" id="nodeIds"></div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Add</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="addEdge()">Add</button>
                       </div>
                     </div>
                   </div>
                 </div>    
-                <br/><br/>
+                <br/>
                 <div class="bg-danger text-danger" id="errorFeed"></div>
                 <br/>
                 <div id="displayedGraph"></div>
@@ -139,8 +135,9 @@
         <script src="{{ url_for('static',filename='vis.min.js') }}"></script>
         <script>
         var hasInitial = 1;
-        var nodeId = 0;
-        
+        var nodeId = 1;
+        var edgeId = 1;
+                
         //Generate the initial graph
         var nodes = new vis.DataSet([
             {id:0, label:'0', shape:'diamond', color:{background:'#33cc33'}}
@@ -155,22 +152,40 @@
         };
         var options = {};
         var network = new vis.Network(container, data, options);
+              
+        document.getElementById('nodeIds').innerHTML = "<p>Existing nodes:<br/> ";
+        for (id in nodes.getIds()) {
+            document.getElementById('nodeIds').innerHTML += "<code>(ID: "+id+", Label: "+nodes.get(id).label+")</code><br/> ";
+        }
+        document.getElementById('nodeIds').innerHTML += "</p>";        
+        
+        function updateNodeList() {
+            document.getElementById('nodeIds').innerHTML = "<p>Existing nodes:<br/> ";
+            for (id in nodes.getIds()) {
+                document.getElementById('nodeIds').innerHTML += "<code>(ID: "+id+", Label: "+nodes.get(id).label+")</code><br/> ";
+            }
+            document.getElementById('nodeIds').innerHTML += "</p>";
+        }
+        
+        updateNodeList();
         
         //Adds a node - there are several cases that need to be taken care of
         function addNode() {
             //Wipe the error feed
             document.getElementById('errorFeed').innerHTML = "";
             
-            var highlight = "";
             var nodeColor = "";
             var nodeShape = "";
             var type = document.getElementById("type").value;
             var nodeLabel = document.getElementById("label").value;            
             
             //Error checking - print the output
-            if (type === "Final"){
-                nodeColor = "background:'#33cc33'";
-            } else if (type === "Initial and Final"){
+            if (nodeLabel.trim() == "") {
+                document.getElementById('errorFeed').innerHTML = "A node label cannot be empty!"
+                return;
+            }
+            
+            if (type === "Initial and Final"){
                 if (hasInitial === 1) {
                     document.getElementById('errorFeed').innerHTML = "The graph already has an initial state! Either remove it or change its type!"
                     return;
@@ -178,7 +193,9 @@
                     hasInitial = 1;
                 }
                 nodeShape = "diamond";
-                nodeColor = "background:'#33cc33'";
+                nodeColor = {background:'#33cc33'}; 
+            } else if (type === "Final"){
+                nodeColor = {background:'#33cc33'};
             } else if (type === "Initial"){
                 if (hasInitial === 1) {
                     document.getElementById('errorFeed').innerHTML = "The graph already has an initial state! Either remove it or change its type!"
@@ -202,11 +219,39 @@
                 nodes.add({id: nodeId, label: nodeLabel});  
                 ++nodeId;
             }  
+            updateNodeList();
         }
         
         //Adds an edge
         function addEdge() {
             document.getElementById('errorFeed').innerHTML = "";
+            var fromId = document.getElementById("from").value;
+            var toId = document.getElementById("to").value;            
+            var under = document.getElementById("under").value;
+            console.log(toId);
+            console.log(fromId);
+            
+            
+            if (nodes.getIds().indexOf(parseInt(fromId)) === -1 || nodes.getIds().indexOf(parseInt(toId)) === -1) {
+                document.getElementById('errorFeed').innerHTML = "Invalid from/to id! Use only existing node ids!"
+                return;
+            }
+            
+            if (under === "") {
+                document.getElementById('errorFeed').innerHTML = "Epsilon transitions are not allowed!"
+                return;
+            }
+            
+            for (id in edges.getIds()) {
+                if (edges.get(id).from === fromId && edges.get(id).to === toId && edges.get(id).label === under) {
+                    document.getElementById('errorFeed').innerHTML = "Adding duplicate transitions is not allowed!"
+                    return;
+                }
+            }
+            
+            edges.add({id:edgeId,from:fromId,to:toId,arrows:'to',label:under,color:'#2B7CE9'});
+            ++edgeId;
+            network.redraw();
         }
         
         //Removes the selected graph element
@@ -221,9 +266,11 @@
                 }
             }
             network.deleteSelected();
+            updateNodeList();
         }
         
         function removeGraph() {
+            document.getElementById('errorFeed').innerHTML = "";
             if (nodes.length === 0 && edges.length === 0) {
                 document.getElementById('errorFeed').innerHTML = "Nothing to remove!"
                 return;
@@ -231,6 +278,7 @@
             nodes.remove(nodes.getIds());
             edges.remove(edges.getIds());
             hasInitial = 0;
+            updateNodeList();
         }
         
         </script>
