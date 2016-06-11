@@ -187,7 +187,7 @@
             var nodeLabel = document.getElementById("label").value;            
             
             //Error checking - print the output
-            if (nodeLabel.trim() == "") {
+            if (nodeLabel.trim() === "") {
                 document.getElementById('errorFeed').innerHTML = "A node label cannot be empty!"
                 return;
             }
@@ -305,7 +305,9 @@
                 $.getJSON($SCRIPT_ROOT + '/export_scxml', {
                         edges: JSON.stringify(edges._data),
                         nodes: JSON.stringify(nodes._data)
-                    },);
+                    }, function(data) {
+                       document.getElementById('outputArea').innerHTML = "<pre>" + data.outputArea + "</pre>";
+                });
             return false;
             });
         });

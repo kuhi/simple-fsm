@@ -18,9 +18,10 @@ def parseFsmFromStringXml(document):
             newfsm.addState(str(state.get('id')),state.get('label'),type)
             i+=1
         else:
-            newfsm.addState(str(state.get('id')),state.get('label'),str(state.get('type')))            
+            newfsm.addState(str(state.get('id')),state.get('label'),str(state.get('type')))    
         for transition in state.findall('transition'):
             newfsm.addTransition(str(state.get('id')),transition.get('under'),transition.text)
+                   
     return newfsm
         
 def serializeLetters(input):

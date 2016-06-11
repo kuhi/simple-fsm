@@ -12,7 +12,7 @@
 
 
     <xsl:template match="/fsm">
-        <scxml xmlns="http://www.w3.org/2005/07/scxml">
+        <scxml version="1.0" xmlns="http://www.w3.org/2005/07/scxml">
             <xsl:call-template name="states"/>
         </scxml>
     </xsl:template>

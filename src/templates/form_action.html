@@ -71,7 +71,9 @@
                 </div>
                 <br>
                 <div id="displayedGraph"></div>
-                <button id="resetgraph" class="btton btn-success" >Reset</button>
+                <button id="resetgraph" class="btn btn-s btn-success" >Reset</button>
+                <input class="btn btn-s btn-success" id="exScXml" type="submit" value="Export as scxml" />
+                <div id="outputArea"></div>
             </div>
         </div>
         
@@ -80,8 +82,28 @@
         <script src="{{ url_for('static',filename='bootstrap.min.js') }}"></script>
         <script src="{{ url_for('static',filename='vis.min.js') }}"></script>
         <script>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     {{graphvis|safe}}
     {{transitionscripts|safe}}
     {{resetgraph|safe}}
+
+        $(function() {
+
+            $('#exScXml').bind('click', function() {
+                try {
+                $.getJSON($SCRIPT_ROOT + '/export_scxml', {
+                        edges: JSON.stringify(edges._data),
+                        nodes: JSON.stringify(nodes._data)
+                    }, function(data) {
+                       document.getElementById('outputArea').innerHTML = "<pre>" + data.outputArea + "</pre>";
+                });
+                }
+                catch(err) {
+                    window.alert(err.message);
+                }
+            return false;
+            });
+        });
+
         </script>
     </body>

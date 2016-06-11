@@ -30,7 +30,7 @@ class FSM:
         self.transitions[str(id)] = []
         
     def addTransition(self, stateId, under, to):
-        print('adding' + self + stateId + to)
+        print('adding' + stateId + under + to)
         self.alphabet.add(under)
         self.transitions[stateId].append((under,to))
         
@@ -67,6 +67,8 @@ class FSM:
         xml = "<fsm>\n"
         type = ""
 
+        print(len(self.states))
+
         for state in self.states:
             if state[0] == self.initial:
                 if state[2] == "if":
@@ -76,12 +78,12 @@ class FSM:
                 xml += "    <state id=\"" + state[0] + "\" label=\"" + state[1] + "\" type=\"" + type + "\">\n"
                 for transition in self.transitions[state[0]]:
                     xml += "        <transition under=\"" + transition[0] + "\">" + transition[1] + "</transition>\n"
-                    xml += "    </state>\n" 
+                xml += "    </state>\n" 
                 break
             
         for state in self.states:
             if state[0] == self.initial:
-                break
+                continue
             xml += "    <state id=\"" + state[0] + "\" label=\"" + state[1] + "\" type=\"" + state[2] + "\">\n"
             for transition in self.transitions[state[0]]:
                 xml += "        <transition under=\"" + transition[0] + "\">" + transition[1] + "</transition>\n"

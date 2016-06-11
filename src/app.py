@@ -155,14 +155,18 @@ def export_scxml():
         except:
             fsm.transitions[str(edges[trans]['from'])] = []
             fsm.transitions[str(edges[trans]['from'])].append((edges[trans]['label'],str(edges[trans]['to'])))
+  
+    try:
+        fsmString = fsm.getFsmXml()
+        print(fsmString)
+        dom = etree.fromstring(fsmString)
+        xslt = etree.parse("fsm_to_scxml.xsl")
+        transform = etree.XSLT(xslt)
+        newdom = transform(dom)
+        scxml = etree.tostring(newdom, pretty_print=True)
+    except Exception as e:
+        print(e)
     
-    fsmString = fsm.getFsmXml()
-    dom = etree.fromstring(fsmString)
-    xslt = etree.parse("fsm_to_scxml.xsl")
-    transform = etree.XSLT(xslt)
-    newdom = transform(dom)
-    scxml = etree.tostring(newdom, pretty_print=True)
-   
     return jsonify(outputArea=escape(scxml.decode()))
     
     
@@ -217,21 +221,24 @@ def evaluate_fsm():
         #    print("ERROR ON LINE %s: %s" % (error.line, error.message.encode("utf-8")))
         return render_template('invalidInput.html', error = xmlschema.error_log.last_error)
         
-    fsm = parseFsmFromStringXml(scxml)
-    edges = getEdgeIds(fsm)
-    out = fsmIntoJavaScript(fsm, edges)
-    
-    words = request.form['words']
-    transitionscripts = ""
-    wordsDict = dict()
-    wordCount = 0
-    for word in words.splitlines():
-        if wordCount == app.config["MAX_WORDS"]:
-            break
-        wordsDict[word] = fsm.calculate(word, ['resetgraph','displayedGraph','navbar'])
-        transitionscripts += viewTransitionOnClickJs(word, edges, wordsDict[word])
-        wordCount += 1
-    resetgraph = viewTransitionOnClickJs('resetgraph', edges, (True, []))
+    try:    
+        fsm = parseFsmFromStringXml(scxml)
+        edges = getEdgeIds(fsm)
+        out = fsmIntoJavaScript(fsm, edges)
+        
+        words = request.form['words']
+        transitionscripts = ""
+        wordsDict = dict()
+        wordCount = 0
+        for word in words.splitlines():
+            if wordCount == app.config["MAX_WORDS"]:
+                break
+            wordsDict[word] = fsm.calculate(word, ['resetgraph','displayedGraph','navbar'])
+            transitionscripts += viewTransitionOnClickJs(word, edges, wordsDict[word])
+            wordCount += 1
+        resetgraph = viewTransitionOnClickJs('resetgraph', edges, (True, []))
+    except Exception as e:
+        print(e)
     return render_template('form_action.html', scxml=scxml, words=wordsDict, graphvis=out, transitionscripts=transitionscripts, resetgraph=resetgraph)
 
 # Run the app :)
