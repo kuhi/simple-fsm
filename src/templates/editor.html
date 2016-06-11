@@ -167,7 +167,7 @@
         document.getElementById('nodeIds').innerHTML += "</p>";        
         
         function updateNodeList() {
-            document.getElementById('nodeIds').innerHTML = "<p>Existing nodes:<br/> ";
+            document.getElementById('nodeIds').innerHTML = "<p>Existing nodes: (" + nodes.length + ")<br/> ";
             for (id in nodes.getIds()) {
                 document.getElementById('nodeIds').innerHTML += "<code>(ID: "+id+", Label: "+nodes.get(id).label+")</code><br/> ";
             }
