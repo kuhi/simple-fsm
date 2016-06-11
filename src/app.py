@@ -42,7 +42,7 @@ def export():
     dom = etree.parse(document)
     xslt = etree.parse("fsm_to_scxml.xsl")
     transform = etree.XSLT(xslt)
-    newdom = transform(newdom)
+    newdom = transform(dom)
     print(etree.tostring(newdom, pretty_print=True))
 
     # We need to modify the response, so the first thing we 
@@ -120,6 +120,51 @@ def export_fsmxml():
     print(fsm)
     print(fsm.getFsmXml())
     return jsonify(outputArea=escape(fsm.getFsmXml()))
+
+@app.route('/export_scxml')
+def export_scxml():
+
+    nodes = request.args['nodes']
+    edges = request.args['edges']
+    #Create a copy
+    nodes = json.loads((nodes+'.')[:-1])
+    edges = json.loads((edges+'.')[:-1])
+    fsm = FSM()
+
+    for stateId in nodes.keys():
+        try:
+            isFinal = nodes[stateId]['color']['background'] == '#33cc33'
+        except:
+            isFinal = False
+        try:
+            isInitial = nodes[stateId]['shape'] == 'diamond'
+        except:
+            isInitial = False
+        if isFinal and not isInitial:
+            type = 'f'
+        elif isInitial and not isFinal:
+            type = 'i'
+        elif isFinal and isInitial:
+            type = 'if'
+        else:
+            type = 'r'
+        fsm.addState(stateId,nodes[stateId]['label'],type)
+    for trans in edges:
+        try:
+            fsm.transitions[str(edges[trans]['from'])].append((edges[trans]['label'],str(edges[trans]['to'])))
+        except:
+            fsm.transitions[str(edges[trans]['from'])] = []
+            fsm.transitions[str(edges[trans]['from'])].append((edges[trans]['label'],str(edges[trans]['to'])))
+    
+    fsmString = fsm.getFsmXml()
+    dom = etree.fromstring(fsmString)
+    xslt = etree.parse("fsm_to_scxml.xsl")
+    transform = etree.XSLT(xslt)
+    newdom = transform(dom)
+    scxml = etree.tostring(newdom, pretty_print=True)
+   
+    return jsonify(outputArea=escape(scxml.decode()))
+    
     
 @app.route('/help')
 def help():
@@ -191,4 +236,7 @@ def evaluate_fsm():
 
 # Run the app :)
 if __name__ == '__main__':
-  app.run()
+  app.run( 
+        host="0.0.0.0",
+        port=int("5000")
+  )

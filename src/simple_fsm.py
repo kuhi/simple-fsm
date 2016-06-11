@@ -65,7 +65,23 @@ class FSM:
             
     def getFsmXml(self):
         xml = "<fsm>\n"
+        type = ""
+
         for state in self.states:
+            if state[0] == self.initial:
+                if state[2] == "if":
+                    type = "f"
+                else:
+                    type = "r"
+                xml += "    <state id=\"" + state[0] + "\" label=\"" + state[1] + "\" type=\"" + type + "\">\n"
+                for transition in self.transitions[state[0]]:
+                    xml += "        <transition under=\"" + transition[0] + "\">" + transition[1] + "</transition>\n"
+                    xml += "    </state>\n" 
+                break
+            
+        for state in self.states:
+            if state[0] == self.initial:
+                break
             xml += "    <state id=\"" + state[0] + "\" label=\"" + state[1] + "\" type=\"" + state[2] + "\">\n"
             for transition in self.transitions[state[0]]:
                 xml += "        <transition under=\"" + transition[0] + "\">" + transition[1] + "</transition>\n"

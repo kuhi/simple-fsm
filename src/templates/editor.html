@@ -130,7 +130,7 @@
                 <br/>
                 
                 <input class="btn btn-s btn-success" id="exFsmXml" type="submit" value="Export as fsm-xml (native)" />
-                <input class="btn btn-s btn-success" type="exScXml" value="Export as scxml" />
+                <input class="btn btn-s btn-success" id="exScXml" type="submit" value="Export as scxml" />
                 <br/>
             </div>
         </div>
@@ -299,6 +299,18 @@
             return false;
             });
         });
+
+         $(function() {
+            $('#exScXml').bind('click', function() {
+                $.getJSON($SCRIPT_ROOT + '/export_scxml', {
+                        edges: JSON.stringify(edges._data),
+                        nodes: JSON.stringify(nodes._data)
+                    },);
+            return false;
+            });
+        });
+
+        
         
         </script>
     </body>
