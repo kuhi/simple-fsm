@@ -41,9 +41,11 @@ def getEdgeIds(fsm):
     for (id,label,_) in fsm.states:
         toTrans = dict()
         for (under,to) in fsm.transitions[id]:
-            toTrans[to].append(under)
-            toTrans[to] = []
-            toTrans[to].append(under)
+            try:
+                toTrans[to].append(under)
+            except:
+                toTrans[to] = []
+                toTrans[to].append(under)
         for finalNode in toTrans.keys():
             edges.append((str(edgeId),str(id),finalNode,serializeLetters(toTrans[finalNode])))
             edgeId += 1
