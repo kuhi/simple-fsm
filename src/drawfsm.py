@@ -3,6 +3,8 @@
 from simple_fsm import *
 import xml.etree.ElementTree as ET
 
+#Parses the Tree representation of the FSMXML
+#and converts it to a fsm object
 def parseFsmFromStringXml(document):
     #parse the xml and create an empty finite state machine
     root = ET.fromstring(document)
@@ -23,13 +25,16 @@ def parseFsmFromStringXml(document):
             newfsm.addTransition(str(state.get('id')),transition.get('under'),transition.text)
                    
     return newfsm
-        
+
+#Just puts commas inbetween words
 def serializeLetters(input):
     output = ""
     for i in input:
         output += str(i) + ","
     return output[:-1]
     
+#Computes edge ids of the given 'fsm'.
+#This is anologous to the implementation of the edges in the javascript (visjs)
 def getEdgeIds(fsm):
     edgeId = 0
     edges = []
@@ -46,9 +51,10 @@ def getEdgeIds(fsm):
             edgeId += 1
     return edges
                 
-    
+#Return the 'fsm' object with the given 'edges' (visjs edges with ids)
+#as a visjs network (with edges and nodes as visjs dataset)
 def fsmIntoJavaScript(fsm, edges):
-    #first, define the 
+    #first, define the states
     if len(fsm.states) == 0:
         output = "\tvar nodes = new vis.DataSet();\n"
     else:     
@@ -96,7 +102,9 @@ def viewTransitionOnClickJs(word, edges, path):
         return output
     else:
         return ""
-    
+
+#compute the given 'word' on the given 'fsm'
+#don't ask me        
 def computeWord(fsm, word):
     return fsm.calculate(word, ['resetgraph','displayedGraph','navbar'])
     
