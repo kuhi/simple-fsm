@@ -40,7 +40,6 @@ class FSM:
     #Insert a new transition into the Automaton:
     #-from 'stateId' under 'under' to 'to'
     def addTransition(self, stateId, under, to):
-        print('adding' + stateId + under + to)
         self.alphabet.add(under)
         self.transitions[stateId].append((under,to))
     
