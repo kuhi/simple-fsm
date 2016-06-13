@@ -237,23 +237,25 @@
             var fromId = document.getElementById("from").value;
             var toId = document.getElementById("to").value;            
             var under = document.getElementById("under").value;
-            console.log(toId);
-            console.log(fromId);
             
+            if (under.length > 1) {
+                document.getElementById('errorFeed').innerHTML = "Only one letter transitions are allowed!";
+                return;
+            }
             
             if (nodes.getIds().indexOf(parseInt(fromId)) === -1 || nodes.getIds().indexOf(parseInt(toId)) === -1) {
-                document.getElementById('errorFeed').innerHTML = "Invalid from/to id! Use only existing node ids!"
+                document.getElementById('errorFeed').innerHTML = "Invalid from/to id! Use only existing node ids!";
                 return;
             }
             
             if (under === "") {
-                document.getElementById('errorFeed').innerHTML = "Epsilon transitions are not allowed!"
+                document.getElementById('errorFeed').innerHTML = "Epsilon transitions are not allowed!";
                 return;
             }
             
             for (id in edges.getIds()) {
                 if (edges.get(id).from === fromId && edges.get(id).to === toId && edges.get(id).label === under) {
-                    document.getElementById('errorFeed').innerHTML = "Adding duplicate transitions is not allowed!"
+                    document.getElementById('errorFeed').innerHTML = "Adding duplicate transitions is not allowed!";
                     return;
                 }
             }

@@ -28,7 +28,7 @@ app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USERNAME"] = data[0].strip()
 app.config["MAIL_PASSWORD"] = data[1].strip()
 
-#max word permitted
+#max word amount permitted
 app.config["MAX_WORDS"] = 15
 
 mail.init_app(app)
@@ -244,6 +244,5 @@ def evaluate_fsm():
 # Run the app :)
 if __name__ == '__main__':
   app.run( 
-        host="0.0.0.0",
         port=int("5000")
   )

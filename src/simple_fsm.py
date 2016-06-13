@@ -67,7 +67,6 @@ class FSM:
         xml = "<fsm>\n"
         type = ""
 
-        print(len(self.states))
 
         for state in self.states:
             if state[0] == self.initial:
