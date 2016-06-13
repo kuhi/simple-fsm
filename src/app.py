@@ -223,13 +223,12 @@ def evaluate_fsm():
     fsm = FSM()
     out = ""
     scxml = request.form['scxml']
-    schema = etree.parse("fsm_schema.xsd")
-    xmlschema = etree.XMLSchema(schema)
-
     try:
+        schema = etree.parse("fsm_schema.xsd")
+        xmlschema = etree.XMLSchema(schema)
         document = etree.fromstring(scxml)
         print("Parse complete!")
-    except etree.XMLSyntaxError as e:
+    except Exception as e:
         print(e)
         return render_template('invalidInput.html', error = e)
         
@@ -261,5 +260,6 @@ def evaluate_fsm():
 # Run the app :)
 if __name__ == '__main__':
   app.run( 
+        host="0.0.0.0",
         port=int("5000")
   )

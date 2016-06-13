@@ -9,7 +9,13 @@
                                 <xsd:complexType>
                                     <xsd:simpleContent>
                                         <xsd:extension base="xsd:nonNegativeInteger">
-                                            <xsd:attribute name="under" type="xsd:string"/>
+                                            <xsd:attribute name="under">
+                                                <xsd:simpleType>
+                                                    <xsd:restriction base="xsd:string">
+                                                        <xsd:maxLength value="1"/>
+                                                    </xsd:restriction>
+                                                </xsd:simpleType>
+                                            </xsd:attribute>
                                         </xsd:extension>
                                     </xsd:simpleContent>
                                 </xsd:complexType>
