@@ -168,6 +168,23 @@ def export_scxml():
         print(e)
     
     return jsonify(outputArea=escape(scxml.decode()))
+
+@app.route('/export_scxml_HTML')
+def export_scxml_HTML():
+
+    fsmString = request.args['fsmString'].encode("utf-8")
+  
+    try:
+        print(fsmString)
+        dom = etree.fromstring(fsmString)
+        xslt = etree.parse("fsm_to_scxml.xsl")
+        transform = etree.XSLT(xslt)
+        newdom = transform(dom)
+        scxml = etree.tostring(newdom, pretty_print=True)
+    except Exception as e:
+        print(e)
+    
+    return jsonify(outputArea=escape(scxml.decode()))
     
     
 @app.route('/help')

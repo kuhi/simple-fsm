@@ -45,7 +45,7 @@
         <div class="container">
             <div class="jumbotron">
                 <br>
-                <pre style="white-space:pre-wrap">{{scxml}}</pre> 
+                <pre style="white-space:pre-wrap" id="scxml">{{scxml}}</pre> 
                 <br>
                 <p>Be aware that the <span style="color:green">ε</span> letter is in this case used to represent a space (" ") rather than an empty string!</p>
                 <div class="table-responsive">
@@ -93,9 +93,8 @@
 
             $('#exScXml').bind('click', function() {
                 try {
-                $.getJSON($SCRIPT_ROOT + '/export_scxml', {
-                        edges: JSON.stringify(edges._data),
-                        nodes: JSON.stringify(nodes._data)
+                $.getJSON($SCRIPT_ROOT + '/export_scxml_HTML', {
+                        fsmString: document.getElementById("scxml").textContent
                     }, function(data) {
                        document.getElementById('outputArea').innerHTML = "<pre>" + data.outputArea + "</pre>";
                 });

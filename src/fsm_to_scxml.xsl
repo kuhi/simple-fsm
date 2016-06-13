@@ -52,7 +52,7 @@
 </xsl:template>
 
 <xsl:template name="transitionTranform">
-        <xsl:variable name="event" select="translate(@under,',',' ')"/>
+        <xsl:variable name="event" select="@under"/>
         <xsl:variable name="target" select="."/>
         <transition event="{$event}" target="{$target}"/>
 </xsl:template>
