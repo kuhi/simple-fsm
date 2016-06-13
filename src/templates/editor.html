@@ -253,8 +253,8 @@
                 return;
             }
             
-            for (id in edges.getIds()) {
-                if (edges.get(id).from === fromId && edges.get(id).to === toId && edges.get(id).label === under) {
+            for (i = 0; i < edges.getIds().length; ++i) {
+                if (edges.get(edges.getIds()[i]).from === fromId && edges.get(edges.getIds()[i]).to === toId && edges.get(edges.getIds()[i]).label === under) {
                     document.getElementById('errorFeed').innerHTML = "Adding duplicate transitions is not allowed!";
                     return;
                 }
