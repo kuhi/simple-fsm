@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+ 
+  <articleinfo>
+    <title>Záverečná správa projektu Zpracování konečných automatů</title>
+    <author>
+      <firstname>Marek</firstname>
+      <surname>Vančík</surname>
+      <affiliation>
+        <orgname>Fakulta Informatiky, Masarykova univerzita, Brno</orgname>
+      </affiliation>
+    </author>
+    <pubdate>14.6.2015</pubdate>
+  </articleinfo>
+  <section>
+      <title>Analýza a návrh</title>
+      <para>Po zadaní projektu a vzájomnej dohode na rozdelení úloh bolo mojím cieľom pripraviť XML schému pre formát pre uloženie konečných automatov a ich transformáci na scxml.</para> 
+  </section>
+  <section>
+      <title>Implementácia</title>
+      <para>Po tom ako sme zvládli svoje počiatočné úlohy sme sa vrhli do implementácie projektu. Kedže sme boli len dvaja nemuseli sme to nejako moc organizovať a ja som proste dokončil to čo Jakub predtým rozrobil a takto sme sa stále striedali. Kedže sme stále medzi sebou komunikovali nebol s tým problém a vyhovovalo nám to.</para>
+  </section>
+  <section>
+      <title>Záver</title>
+      <para>Niektoré veci boli trocha problematické. Najvačší problém bol asi objem informácií, ktoré som musel nasať a použiť ich kedže je to prvá webová aplikácia, ktorú som robil v pythone a druhá celkovo v živote. Taktiež som prvýkrát robil s javascriptom ale s celkovým výsledkom som nakoniec spokojný a som rád, že som bol aj takto "donútený" naučiť sa nové veci.</para>
+  </section>
+</article>
