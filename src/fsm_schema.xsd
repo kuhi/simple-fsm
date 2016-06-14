@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
     <xsd:element name="fsm">
         <xsd:complexType>
@@ -57,7 +58,7 @@
         </xsd:restriction>
     </xsd:simpleType>
 
-    <xsd:simpleType name="type_category" final="restriction">
+    <xsd:simpleType name="type_category">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="r"/>
             <xsd:enumeration value="f"/>
