@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+ 
+  <articleinfo>
+    <title>Záverečná správa projektu Zpracování konečných automatů</title>
+    <author>
+      <firstname>Jakub</firstname>
+      <surname>Kohút</surname>
+      <affiliation>
+        <orgname>Fakulta Informatiky, Masarykova univerzita, Brno</orgname>
+      </affiliation>
+    </author>
+    <pubdate>14.6.2016</pubdate>
+  </articleinfo>
+  <section>
+      <title>Analýza a návrh</title>
+      <para>Po zadaní projektu a vzájomnej dohode na rozdelení úloh bolo mojim cieľom pripraviť back-end webovej aplikácie v programovacom jazyku Python 3.5 a organizovať štruktúru projektu tak, aby sme sa neodklonili od cesty k cieľu.</para> 
+  </section>
+  <section>
+      <title>Implementácia</title>
+      <para>Implementácia prebiehala tak, že sme z existujúcich šablón pre Flask a Bootstrap vymodelovali nám vyhovujúcu štruktúru aplikácie a po lepšom zoznámení sa s technológiami, s ktorými sme pracovali, sme sa s problémami, ktoré tento projekt pre nás pripravil, rýchlo dokázali vysporiadať. Keďže sme pracovali na projekte iba dvaja, organizácia bola dosť voľná a v podstate každý mohol pracovať na tom, čo mu najlepšie sedelo. Takto nám to najlepšie vyhovovalo a dokázali sme robiť progres v celkom dobrom tempe.</para>
+  </section>
+  <section>
+      <title>Záver</title>
+      <para>Tento projekt bol extrémne obohacujúca skúsenosť. V mojom prípade išlo o prvú webovú aplikáciu vôbec. Zo začiatku som si bol vedomý rizika, že možno z toho nič nevzíde, našťastie sa moje obavy nenaplnili a vypracovali sme aplikáciu, ktorá predčila naše očakávania. </para>
+  </section>
+</article>
